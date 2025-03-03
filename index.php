@@ -853,6 +853,7 @@ error_reporting(E_ALL);
                                                                                 <span class="text">
                                                                                     <div class="icheck-primary d-inline ml-2">
                                                                                         <input type="checkbox" value=""
+                                                                                            class="form-control form-control-sm"
                                                                                             name="todo<?= $speaker['div_no'] ?>"
                                                                                             id="todoCheck<?= $speaker['div_no'] ?>">
                                                                                         <label
@@ -865,7 +866,8 @@ error_reporting(E_ALL);
                                                                                 <span class="text">
                                                                                     <input type="text"
                                                                                         name="nt_<?= $speaker['div_no'] ?>"
-                                                                                        id="nt_<?= $speaker['div_no'] ?>" class=""
+                                                                                        id="nt_<?= $speaker['div_no'] ?>"
+                                                                                        class="form-control form-control-sm"
                                                                                         style="width: 50%;" placeholder="--:--">
                                                                                 </span>
                                                                                 <span
