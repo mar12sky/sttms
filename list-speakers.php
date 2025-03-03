@@ -99,7 +99,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link active">
+                            <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-file-excel"></i>
                                 <p>
                                     Logs
@@ -114,12 +114,20 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="list-speakers.php" class="nav-link active">
+                                    <a href="list-speakers.php" class="nav-link">
+                                        <i class="nav-icon fab fa-speaker-deck"></i>
+                                        <p>
+                                            Speakers list
+                                            <!-- <span class="right badge badge-danger">New</span> -->
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="list-speakers.php" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Speakers List Log</p>
                                     </a>
                                 </li>
-
                             </ul>
                         </li>
 
@@ -198,83 +206,83 @@
                                     <!-- -->
                                     <?php include 'connection.php'; ?>
                                     <?php
-                  $pdo = pdo_connect_mysql();
-                  // Get the page via GET request (URL param: page), if non exists default the page to 1
-                  $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
-                  // Number of records to show on each page
-                  $records_per_page = 15;
+                                    $pdo = pdo_connect_mysql();
+                                    // Get the page via GET request (URL param: page), if non exists default the page to 1
+                                    $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+                                    // Number of records to show on each page
+                                    $records_per_page = 15;
 
 
-                  // Prepare the SQL statement and get records from our contacts table, LIMIT will determine the page
-                  //$stmt = $pdo->prepare('SELECT * FROM delegates ORDER BY div_no LIMIT :current_page, :record_per_page');
-                  $stmt = $pdo->prepare('SELECT * FROM party_groups ORDER BY group_id');
-                  //$stmt->bindValue(':current_page', ($page-1)*$records_per_page, PDO::PARAM_INT);
-                  //$stmt->bindValue(':record_per_page', $records_per_page, PDO::PARAM_INT);
-                  $stmt->execute();
-                  // Fetch the records so we can display them in our template.
-                  $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                    // Prepare the SQL statement and get records from our contacts table, LIMIT will determine the page
+                                    //$stmt = $pdo->prepare('SELECT * FROM delegates ORDER BY div_no LIMIT :current_page, :record_per_page');
+                                    $stmt = $pdo->prepare('SELECT * FROM party_groups ORDER BY group_id');
+                                    //$stmt->bindValue(':current_page', ($page-1)*$records_per_page, PDO::PARAM_INT);
+                                    //$stmt->bindValue(':record_per_page', $records_per_page, PDO::PARAM_INT);
+                                    $stmt->execute();
+                                    // Fetch the records so we can display them in our template.
+                                    $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                  // Get the total number of contacts, this is so we can determine whether there should be a next and previous button
-                  //$num_contacts = $pdo->query('SELECT COUNT(*) FROM parties')->fetchColumn();
-                  ?>
+                                    // Get the total number of contacts, this is so we can determine whether there should be a next and previous button
+                                    //$num_contacts = $pdo->query('SELECT COUNT(*) FROM parties')->fetchColumn();
+                                    ?>
                                     <div class="row">
                                         <?php foreach ($contacts as $contact): ?>
-                                        <div class="col-4">
-                                            <div class="card card-widget">
-                                                <div class="card-header bg-info">
-                                                    <h3 class="card-title">
-                                                        <!-- <i class="fas fa-edit"></i> -->
-                                                        <?= $contact['group_name'] ?>
-                                                    </h3>
-                                                    <!-- /.user-block -->
-                                                    <div class="card-tools">
+                                            <div class="col-4">
+                                                <div class="card card-widget">
+                                                    <div class="card-header bg-info">
                                                         <h3 class="card-title">
-
-                                                            <span class="float-right"><?= $contact['strength'] ?></span>
+                                                            <!-- <i class="fas fa-edit"></i> -->
+                                                            <?= $contact['group_name'] ?>
                                                         </h3>
-                                                        <button type="button" class="btn btn-tool"
-                                                            data-card-widget="collapse">
-                                                            <i class="fas fa-minus"></i>
-                                                        </button>
+                                                        <!-- /.user-block -->
+                                                        <div class="card-tools">
+                                                            <h3 class="card-title">
+
+                                                                <span class="float-right"><?= $contact['strength'] ?></span>
+                                                            </h3>
+                                                            <button type="button" class="btn btn-tool"
+                                                                data-card-widget="collapse">
+                                                                <i class="fas fa-minus"></i>
+                                                            </button>
+                                                        </div>
+                                                        <!-- /.card-tools -->
                                                     </div>
-                                                    <!-- /.card-tools -->
-                                                </div>
-                                                <!-- /.card-header -->
-                                                <div class="card-body">
-                                                    <!-- Time details -->
-                                                    <div class="card card-widget widget-user-2 shadow-sm">
-                                                        <!-- Add the bg color to the header using any of the bg-* classes -->
+                                                    <!-- /.card-header -->
+                                                    <div class="card-body">
+                                                        <!-- Time details -->
+                                                        <div class="card card-widget widget-user-2 shadow-sm">
+                                                            <!-- Add the bg color to the header using any of the bg-* classes -->
 
-                                                        <div class="card-footer p-0">
-                                                            <!-- post text -->
-                                                            <h3>Agenda Detail</h3>
-                                                            <?php
-                                $deli = $pdo->prepare('SELECT * FROM delegates WHERE group_name = "BJP" ORDER BY div_no');
-                                //$deli->execute([$contact['group_name']]);
-                                $deli->execute();
-                                $deligates = $deli->fetchAll(PDO::FETCH_ASSOC);
-                                ?>
-                                                            <?php foreach ($deligates as $deligate): ?>
-                                                            <?= $deligate['name_en'] ?>
-                                                            <?php endforeach; ?>
-                                                            <p>Far far away, behind the word mountains, far from the
-                                                                countries Vokalia and Consonantia, there live the blind
-                                                                texts. Separated they live in Bookmarksgrove right at
-                                                            </p>
+                                                            <div class="card-footer p-0">
+                                                                <!-- post text -->
+                                                                <h3>Agenda Detail</h3>
+                                                                <?php
+                                                                $deli = $pdo->prepare('SELECT * FROM delegates WHERE group_name = "BJP" ORDER BY div_no');
+                                                                //$deli->execute([$contact['group_name']]);
+                                                                $deli->execute();
+                                                                $deligates = $deli->fetchAll(PDO::FETCH_ASSOC);
+                                                                ?>
+                                                                <?php foreach ($deligates as $deligate): ?>
+                                                                    <?= $deligate['name_en'] ?>
+                                                                <?php endforeach; ?>
+                                                                <p>Far far away, behind the word mountains, far from the
+                                                                    countries Vokalia and Consonantia, there live the blind
+                                                                    texts. Separated they live in Bookmarksgrove right at
+                                                                </p>
 
-                                                            <div class="card-header ui-sortable-handle"
-                                                                style="cursor: move;">
-                                                                <h3 class="card-title">
-                                                                    <i class="ion ion-clipboard mr-1"></i>
-                                                                    Speaker List
-                                                                </h3>
+                                                                <div class="card-header ui-sortable-handle"
+                                                                    style="cursor: move;">
+                                                                    <h3 class="card-title">
+                                                                        <i class="ion ion-clipboard mr-1"></i>
+                                                                        Speaker List
+                                                                    </h3>
 
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
                                         <?php endforeach; ?>
                                     </div>
                                     <!-- -->
@@ -326,23 +334,23 @@
     <script src="dist/js/demo.js"></script>
     <!-- Page specific script -->
     <script>
-    $(function() {
-        $("#example1").DataTable({
-            "responsive": true,
-            "lengthChange": true,
-            "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        $('#example2').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
+        $(function() {
+            $("#example1").DataTable({
+                "responsive": true,
+                "lengthChange": true,
+                "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
         });
-    });
     </script>
 </body>
 

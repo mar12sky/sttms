@@ -217,12 +217,11 @@
                                     // $stmta->bindValue(':current_page', ($page - 1) * $records_per_page, PDO::PARAM_INT);
                                     // $stmta->bindValue(':record_per_page', $records_per_page, PDO::PARAM_INT);
                                     //$stmta->execute();
-                                    $stmta = $pdo->prepare('SELECT * FROM agenda  WHERE agenda_status = :status');
-                                    $stmta->execute(array('status' => 'closed'));
+
 
                                     // Fetch the records so we can display them in our template.
                                     $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                    $allAgendas = $stmta->fetchAll(PDO::FETCH_ASSOC);
+
                                     // Get the total number of contacts, this is so we can determine whether there should be a next and previous button
                                     $num_contacts = $pdo->query('SELECT COUNT(*) FROM agenda')->fetchColumn();
                                     ?>
@@ -235,22 +234,32 @@
                                                             class="float-right text-primary font-weight-bold"><?= strtoupper($contact['agenda_type']) ?></small></span>
                                                     <span class="info-box-number"><?= $contact['agenda_title'] ?></span>
                                                     <div class="progress">
-                                                        <div class="progress-bar bg-info" style="width: 70%"></div>
+                                                        <div class="progress-bar bg-info" style="width: 100%"></div>
                                                     </div>
                                                     <span class="progress-description">
-                                                        <a
-                                                            href="view-agenda-<?= $contact['agenda_type'] ?>.php?agenda_id=<?= $contact['agenda_id'] ?>">View
-                                                            Agenda</a>
+                                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                                            <a class="btn btn-success"
+                                                                href="view-agenda-<?= $contact['agenda_type'] ?>.php?agenda_id=<?= $contact['agenda_id'] ?>">View
+                                                            </a>
+                                                            <a class="btn btn-primary" target="_blank"
+                                                                href="speakers-list-log.php?agenda_id=<?= $contact['agenda_id'] ?>">Speakers
+                                                                Log</a>
+                                                            <a class="btn btn-warning" target="_blank"
+                                                                href="time-allotment-log.php?agenda_id=<?= $contact['agenda_id'] ?>">Time
+                                                                Log</a>
+                                                        </div>
+                                                        <small class="float-right">
+                                                            <form id="end-agenda-form" method="post"
+                                                                action="end_agenda.php">
+                                                                <input type="hidden" name="agenda_id" id="agenda_id"
+                                                                    value="<?= $contact['agenda_id'] ?>">
+                                                                <button id="end_agenda" class="btn btn-danger float-right"
+                                                                    data-session-id="<?= $contact['agenda_id'] ?>">End
+                                                                </button>
+                                                            </form>
+                                                        </small>
                                                     </span>
-                                                    <small class="float-right">
-                                                        <form id="end-agenda-form" method="post" action="end_agenda.php">
-                                                            <input type="hidden" name="agenda_id" id="agenda_id"
-                                                                value="<?= $contact['agenda_id'] ?>">
-                                                            <button id="end_agenda" class="btn btn-danger float-right"
-                                                                data-session-id="<?= $contact['agenda_id'] ?>">End
-                                                                Session</button>
-                                                        </form>
-                                                    </small>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -262,34 +271,38 @@
                                     <div class="col-12 mt-4 m-3">
                                         <h3 class="card-title text-bold text-uppercase">Previous Agendas</h3>
                                     </div>
-
+                                    <?php
+                                    $stmta = $pdo->prepare('SELECT * FROM agenda WHERE agenda_status = :status');
+                                    $stmta->execute(array('status' => 'closed'));
+                                    $allAgendas = $stmta->fetchAll(PDO::FETCH_ASSOC);
+                                    ?>
                                     <?php foreach ($allAgendas as $allAgenda): ?>
                                         <div class="col-md-6 col-sm-6 col-12">
                                             <div class="info-box">
                                                 <span class="info-box-icon bg-secondary"><i
                                                         class="far fa-bookmark"></i></span>
                                                 <div class="info-box-content">
-                                                    <span class="info-box-text fw-bold"><?= $contact['created_at'] ?><small
-                                                            class="float-right text-primary font-weight-bold"><?= strtoupper($contact['agenda_type']) ?></small></span>
+                                                    <span
+                                                        class="info-box-text fw-bold"><?= $allAgenda['created_at'] ?><small
+                                                            class="float-right text-primary font-weight-bold"><?= strtoupper($allAgenda['agenda_type']) ?></small></span>
                                                     <span class="info-box-number"><?= $allAgenda['agenda_title'] ?></span>
-                                                    <div class="progress">
-                                                        <div class="progress-bar bg-info" style="width: 70%"></div>
-                                                    </div>
+                                                    <!-- <div class="progress">
+                                                    <div class="progress-bar bg-info" style="width: 70%"></div>
+                                                </div> -->
+                                                    <!-- <span class="progress-description"></span> -->
                                                     <span class="progress-description">
-                                                        <a href="view-agenda.php?agenda_id=<?= $allAgenda['agenda_id'] ?>">View
-                                                            Agenda</a>
+                                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                                            <a class="btn btn-secondary"
+                                                                href="view-agenda-<?= $allAgenda['agenda_type'] ?>.php?agenda_id=<?= $allAgenda['agenda_id'] ?>">View
+                                                                Agenda</a>
+                                                            <a class="btn btn-primary" target="_blank"
+                                                                href="speakers-list-log.php?agenda_id=<?= $allAgenda['agenda_id'] ?>">Speakers
+                                                                Log</a>
+                                                            <a class="btn btn-warning" target="_blank"
+                                                                href="time-allotment-log.php?agenda_id=<?= $allAgenda['agenda_id'] ?>">Time
+                                                                Log</a>
+                                                        </div>
                                                     </span>
-                                                    <!-- <small class="float-right">
-                                                    <form id="end-agenda-form" method="post" action="end_agenda.php">
-                                                        <input type="hidden" name="agenda_id" id="agenda_id"
-                                                            value="<? //= $allAgenda['agenda_id'] 
-                                                                    ?>">
-                                                        <button id="end_agenda" class="btn btn-danger float-right"
-                                                            data-session-id="<? //= $allAgenda['agenda_id'] 
-                                                                                ?>">End
-                                                            Session</button>
-                                                    </form>
-                                                </small> -->
                                                 </div>
                                             </div>
                                         </div>

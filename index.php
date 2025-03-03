@@ -152,10 +152,10 @@ error_reporting(E_ALL);
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="iframe.html" class="nav-link">
+                                    <a href="list-speakers.php" class="nav-link">
                                         <i class="nav-icon fab fa-speaker-deck"></i>
                                         <p>
-                                            Speakers
+                                            Speakers list
                                             <!-- <span class="right badge badge-danger">New</span> -->
                                         </p>
                                     </a>
@@ -566,13 +566,11 @@ error_reporting(E_ALL);
                                                                         <tbody>
                                                                             <tr>
                                                                                 <td colspan="2"
-                                                                                    class="font-weight-bold bg-secondary">
+                                                                                    class="font-weight-bold bg-primary">
                                                                                     <?= $group['group_name']; ?>
                                                                                     <?= $group['strength']; ?>
-                                                                                    <? $agenda_time;
-                                                                                    ?>
-                                                                                    <? $total_strength;
-                                                                                    ?>
+                                                                                    <? $agenda_time; ?>
+                                                                                    <? $total_strength; ?>
                                                                                     <?php $party_time = round($group['strength'] * $agenda_time / $total_strength); ?>
                                                                                 </td>
                                                                             </tr>
@@ -608,7 +606,7 @@ error_reporting(E_ALL);
                                                     <div class="card-header bg-success">
                                                         <h3 class="card-title">
                                                             <i class="ion ion-clipboard mr-1"></i>
-                                                            Speaker List
+                                                            Speakers List
                                                         </h3>
 
                                                         <div class="card-tools">
@@ -862,7 +860,7 @@ error_reporting(E_ALL);
                                                                                 </span>
                                                                                 <!-- todo text -->
                                                                                 <span
-                                                                                    class="text"><?= sprintf("%03d", $speaker['div_no']) ?></span>
+                                                                                    class="text text-primary"><?= sprintf("%03d", $speaker['div_no']) ?></span>
                                                                                 <span class="text">
                                                                                     <input type="text"
                                                                                         name="nt_<?= $speaker['div_no'] ?>"
