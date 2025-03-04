@@ -2,52 +2,52 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display</title>
-    <link rel="stylesheet" href="./css/bootstrap.min.css"
-        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/custom.css">
-    <script src="./js/jquery-3.7.1.min.js"></script>
-    <link rel="stylesheet" href="./plugins/fontawesome-free/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Display</title>
+  <link rel="stylesheet" href="./css/bootstrap.min.css"
+    integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <link rel="stylesheet" href="./css/custom.css">
+  <script src="./js/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="./plugins/fontawesome-free/css/all.min.css">
 
-    <style>
+  <style>
     .self-center {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .red-border-bottom {
-        border-bottom: 5px solid red;
+      border-bottom: 5px solid red;
     }
 
     .red-border-top {
-        border-top: 5px solid red;
+      border-top: 5px solid red;
     }
 
     .tox-promotion {
-        display: none;
+      display: none;
     }
 
     .scrollable-container {
-        height: 300px;
-        overflow: scroll;
+      height: 300px;
+      overflow: scroll;
     }
 
     .my-inline-editor {
-        margin: 12px;
+      margin: 12px;
 
     }
 
     .tox-tinymce-inline {
-        z-index: 999999;
+      z-index: 999999;
     }
-    </style>
+  </style>
 </head>
 
 <body style="min-height:500px;">
-    <?php
+  <?php
   $mode = $_GET['mode'];
   $name = $_GET['inchair'];
   $subject = $_GET['subject'];
@@ -302,7 +302,7 @@ HEREDOC;
 HEREDOC;
   ?>
 
-    <?php
+  <?php
   switch ($mode) {
     case 'zero-hours':
       echo $zerohours;
@@ -318,14 +318,14 @@ HEREDOC;
   }
   ?>
 
-    <script src="./js/jquery.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-    </script>
-    <script src="./js/bootstrap.bundle.min.js"
-        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous">
-    </script>
-    <script src="./js/script.js"></script>
-    <?php
+  <script src="./js/jquery.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+  </script>
+  <script src="./js/bootstrap.bundle.min.js"
+    integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous">
+  </script>
+  <script src="./js/script.js"></script>
+  <?php
   $scriptzerohours = <<<HEREDOC
   <script>
     //alert('Zero Hours');
@@ -338,6 +338,8 @@ HEREDOC;
         const startButton = document.getElementById('start');
         const pauseButton = document.getElementById('pause');
 
+        const socket = new WebSocket('ws://localhost:8080');
+        
         function formatTime(seconds) {
             const hours = String(Math.floor(seconds / 3600)).padStart(2, '0');
             const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
@@ -372,6 +374,53 @@ HEREDOC;
         pauseButton.addEventListener('click', pauseCounting);
 
         updateTimers(); // Initialize the timers on page load
+        socket.addEventListener('message', (event) => {
+            const data = JSON.parse(event.data);
+            //alert(data);
+            startCounting();
+            if (data.type === 'incrementUp') {
+                secondsUp += data.value;
+            } else if (data.type === 'incrementDown') {
+                secondsDown += data.value;
+            }else if (data.action === 'start'){
+            startCounting();
+            }else if (data.action === 'pause'){
+            alert('pause');
+            pauseCounting();
+            } else if (data.action === 'stop'){
+             pauseCounting();
+            alert("STop counting");
+            alert(secondsDown);
+            } else if (data.action == 'message') {
+             const messagesDisplay = document.getElementById('chairMessage');
+             messagesDisplay.innerHTML = data.data;
+             $('#chairMessage').removeClass('d-none');
+             $('#chairMessage').addClass('d-block');
+             $('#chairMessage').addClass('d-none');
+         } else if (data.action === 'time'){
+          //alert(data.spk);
+             document.getElementById('Name').innerHTML = data.spk[0];
+             document.getElementById('Hname').innerHTML = data.spk[1];
+             document.getElementById('FParty').innerHTML = data.spk[2];
+             document.getElementById('State').innerHTML = data.spk[3];
+             document.getElementById('Div').innerHTML = data.spk[4];
+             document.getElementById('Party').innerHTML = data.time[0];
+
+         }
+
+            updateTimers();
+          
+        });
+        
+        // WebSocket connection error handling
+        socket.addEventListener('error', (event) => {
+            console.error('WebSocket error: ', event);
+        });
+
+        // WebSocket connection closure handling
+        socket.addEventListener('close', (event) => {
+            console.log('WebSocket connection closed: ', event);
+        });
   </script>
   HEREDOC;
   $scriptdiscussion = <<<HEREDOC
@@ -458,12 +507,20 @@ HEREDOC;
         // WebSocket message handling
         socket.addEventListener('message', (event) => {
             const data = JSON.parse(event.data);
+            alert(data);
             if (data.type === 'incrementUp') {
                 secondsUp += data.value;
             } else if (data.type === 'incrementDown') {
                 secondsDown += data.value;
+            } else if (data.action === 'start'){
+            startCounting();
+            }else if (data.action === 'pause'){
+            pauseCounting();
+            } else if (data.action === 'stop'){
+            alert("STop counting");
             }
             updateTimers();
+            }
         });
 
         // WebSocket connection error handling
@@ -531,7 +588,7 @@ HEREDOC;
       </script>
       HEREDOC;
   ?>
-    <?php
+  <?php
   switch ($mode) {
     case 'zero-hours':
       echo $scriptzerohours;

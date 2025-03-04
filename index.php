@@ -678,6 +678,7 @@ error_reporting(E_ALL);
 
                                                                                     <script>
                                                                                         function startSpeaking_<?= $speaker['div_no'] ?>() {
+                                                                                            alert("Start Speaking");
                                                                                             const atime_<?= $speaker['div_no'] ?> = document
                                                                                                 .getElementById(
                                                                                                     "nt_<?= $speaker['div_no'] ?>").value;
@@ -694,7 +695,13 @@ error_reporting(E_ALL);
                                                                                                     atime_<?= $speaker['div_no'] ?>
                                                                                                 ]
                                                                                             }));
-                                                                                            //socket.send(JSON.stringify({ action: "time", spk:["AMIT SHAH", "BJP", "UTTAR PRADESH","003"], time: ["60:00", "10:00"] }));
+                                                                                            // socket.send(JSON.stringify({
+                                                                                            //     action: "time",
+                                                                                            //     spk: ["AMIT SHAH", "BJP",
+                                                                                            //         "UTTAR PRADESH", "003"
+                                                                                            //     ],
+                                                                                            //     time: ["60:00", "10:00"]
+                                                                                            // }));
 
                                                                                         }
                                                                                     </script>
@@ -703,6 +710,12 @@ error_reporting(E_ALL);
                                                                                     <button class="border-light h3"
                                                                                         onclick="pauseSpeaking();">
                                                                                         <i class="fas fa-pause"></i>
+                                                                                    </button>
+                                                                                </small>
+                                                                                <small class="badge">
+                                                                                    <button class="border-light h3"
+                                                                                        onclick="stopSpeaking();">
+                                                                                        <i class="fas fa-stop"></i>
                                                                                     </button>
                                                                                 </small>
 
@@ -1029,30 +1042,26 @@ error_reporting(E_ALL);
     <script>
         var socket = new WebSocket('ws://localhost:8080');
 
-        function startSpeaking() {
-            alert('Starting Speaking');
-            socket.send(JSON.stringify({
-                action: "time",
-                spk: ["AMIT SHAH", "BJP", "UTTAR PRADESH", "003"],
-                time: ["60:00", "10:00"]
-            }));
-        }
+        // function startSpeaking() {
+        //     alert('Starting Speaking');
+        //     socket.send(JSON.stringify({
+        //         action: "time",
+        //         spk: ["AMIT SHAH", "BJP", "UTTAR PRADESH", "003"],
+        //         time: ["60:00", "10:00"]
+        //     }));
+        // }
 
         function pauseSpeaking() {
             alert('Pausing Speaking');
             socket.send(JSON.stringify({
-                action: "time",
-                spk: ["AMIT SHAH", "BJP", "UTTAR PRADESH", "003"],
-                time: ["60:00", "10:00"]
+                action: "pause"
             }));
         }
 
         function stopSpeaking() {
             alert('Stopping Speaking');
             socket.send(JSON.stringify({
-                action: "time",
-                spk: ["AMIT SHAH", "BJP", "UTTAR PRADESH", "003"],
-                time: ["60:00", "10:00"]
+                action: "stop"
             }));
         }
     </script>
