@@ -1,3 +1,5 @@
+<?php //include 'debug.php'; 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,8 +43,32 @@
     $num_groups = $pdo->query('SELECT COUNT(*) FROM party_groups')->fetchColumn();
     ?>
     <div class="container" style="width: 900px;">
-        <h2 class="text-center mb-4 mt-5">THE WILD LIFE PROTECTION AMMENDEMENT BILL, 2024</h2>
-        <h3 class="text-center mb-5">TIME ALLOTMENT</h3>
+        <?php
+        if (isset($_GET['agenda_id'])) {
+            $speaker_list;
+            $pdo = pdo_connect_mysql();
+            $stmt = $pdo->prepare('SELECT * FROM agenda WHERE agenda_id = ? ORDER BY agenda_id DESC LIMIT 1');
+            //$stmt = $pdo->query("SELECT * FROM agenda WHERE agenda_status = 'open' ORDER BY agenda_id DESC LIMIT 1");
+            $stmt->execute([$_GET['agenda_id']]);
+            $agenda = $stmt->fetch(PDO::FETCH_ASSOC);
+            $speaker_list = explode(',', $agenda['speaker_list']);
+            $agenda_time;
+            if (!$agenda) {
+                die('Agenda doesn\'t exist with that ID!');
+            } else {
+                //echo " Agenda Found";
+                $agenda_time = $agenda['agenda_time'];
+                echo '<h2 class="text-center mb-3 mt-5">' . $agenda['agenda_title'] . '</h2>';
+                echo '<h3 class="text-center mb-1">LIST OF SPEAKERS</h3>';
+                echo '<strong class="text-center mb-5 d-block">(' . date("d-m-Y", strtotime($agenda['agenda_date'])) . ')</strong>';
+                echo '<p class="text-bold d-inline float-left">' . date("d-m-Y", strtotime($agenda['agenda_date'])) . '</p>';
+                echo '<p class="text-bold d-inline float-right">' . sprintf('%02d:%02d', ($agenda['agenda_time'] / 60 % 60), $agenda['agenda_time'] % 60) . ' Hrs</p>';
+            }
+        } else {
+            die('No ID specified!');
+        }
+        ?>
+
         <table class="table">
             <thead>
                 <tr>
@@ -64,28 +90,33 @@
                 <tr>
                     <th scope="row" style="width: 150px;">Minister's Time</th>
                     <td class="text-center">0-30</td>
-                    <td class="text-center">0-10</td>
-                    <td class="text-center">0-20</td>
                     <td class="text-center">0-00</td>
-                </tr>
-                <?php foreach ($groups as $group): $s + 1; ?>
+                    <td class="text-center">0-00</td>
+                    <td class="text-center">0-00</td>
+                </tr><?php echo $total_strength = array_sum(array_column($groups, 'strength')); ?>
+                <?php foreach ($groups as $group): ?>
                     <tr>
+                        <?php $party_time = round($group['strength'] * $agenda_time / $total_strength); ?>
                         <th scope="row"><?= $group['group_name']; ?></th>
-                        <td class="text-center">Jacob</td>
-                        <td class="text-center">Thornton</td>
+                        <td class="text-center">
+                            <?php echo sprintf('%02d-%02d', ($party_time / 60 % 60), $party_time % 60); ?></td>
+                        <td class="text-center">0-00</td>
                         <td class="text-center"></td>
-                        <td class="text-center">@fat</td>
+                        <td class="text-center">0-00</td>
                     </tr>
                 <?php endforeach; ?>
                 <tr>
                     <th scope="row" style="border-top:1px solid #111; border-bottom:1px solid #111;">TOTAL</th>
-                    <td class="text-center" style="border-top:1px solid #111; border-bottom:1px solid #111;">Larry the
-                        Bird</td>
-                    <td class="text-center" style="border-top:1px solid #111; border-bottom:1px solid #111;">@twitter
+                    <td class="text-center" style="border-top:1px solid #111; border-bottom:1px solid #111;">
+                        0-00</td>
+                    <td class="text-center" style="border-top:1px solid #111; border-bottom:1px solid #111;">
+                        0-00
                     </td>
-                    <td class="text-center" style="border-top:1px solid #111; border-bottom:1px solid #111;">@twitter
+                    <td class="text-center" style="border-top:1px solid #111; border-bottom:1px solid #111;">
+                        0-00
                     </td>
-                    <td class="text-center" style="border-top:1px solid #111; border-bottom:1px solid #111;">@fat</td>
+                    <td class="text-center" style="border-top:1px solid #111; border-bottom:1px solid #111;">0-00
+                    </td>
                 </tr>
             </tbody>
         </table>

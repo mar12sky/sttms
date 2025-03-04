@@ -31,7 +31,7 @@
 <body class="hold-transition sidebar-mini layout-fixed">
     <?php include 'connection.php'; ?>
 
-    <div class="container" style="width: 900px;">
+    <div class="container mb-5" style="width: 900px;">
         <?php
         if (isset($_GET['agenda_id'])) {
             $speaker_list;
@@ -54,7 +54,7 @@
         }
         ?>
 
-        <table class="table">
+        <table class="table mb-5">
             <thead>
                 <tr>
                     <th scope="col">S.N.</th>
@@ -78,12 +78,12 @@
 
                         <tr>
                             <th scope="row"><?= $s; ?></th>
-                            <td class="text-left"><?= $speaker['name_hi']; ?> <br> <?= $speaker['name_en']; ?> </td>
-                            <td class="text-left"><?= $speaker['state_name']; ?></td>
+                            <td class="text-left text-bold"><?= $speaker['name_hi']; ?> <br> <?= $speaker['name_en']; ?> </td>
+                            <td class="text-left text-bold"><?= $speaker['state_name']; ?></td>
                             <td class="text-left">-</td>
 
 
-                            <td class="text-left">
+                            <td class="text-left text-bold">
                                 <?php if ($speaker['group_name'] != $speaker['party']) {
                                     echo strtoupper($speaker['group_name']) . ' [' . $speaker['party'] . ']';
                                 } else {
