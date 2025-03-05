@@ -212,7 +212,7 @@
                                     ?>
                                     <!-- <h3 class="card-title text-bold">TIME ALLOTMENT CHART</h3> -->
                                     <div class="card-tools">
-                                        <a href="http://<?= $_SERVER['HTTP_HOST']; ?>/display/?mode=<?= $contact['agenda_type'] ?>&subject=<?= $contact['agenda_title'] ?>&inchair=<?= $contact['in_the_chair'] ?>"
+                                        <a href="http://<?= $_SERVER['HTTP_HOST']; ?>/display/?mode=<?= $contact['agenda_type'] ?>&agenda_id=<?= $contact['agenda_id'] ?>&subject=<?= $contact['agenda_title'] ?>&inchair=<?= $contact['in_the_chair'] ?>"
                                             target="_blank" class="btn btn-tool" title="View in new window">
                                             <i class="fas fa-external-link-alt"></i></a>
                                     </div>

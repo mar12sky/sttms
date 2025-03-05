@@ -408,7 +408,7 @@ HEREDOC;
             if (data.type === 'incrementUp') {
                 secondsUp += data.value;
             } else if (data.type === 'incrementDown') {             
-             document.getElementById('zero-alloted').innerHTML = formatTime(alltime += data.value);
+             document.getElementById('zero-alloted').innerHTML = formatTime(alltime += parseInt(data.value));
                 secondsDown += data.value;
                 //alert(data.time[1]*60);                                                
             }else if (data.action === 'start'){
@@ -595,27 +595,34 @@ HEREDOC;
       <script>
       //alert('Speaking');
         const ws = new WebSocket('ws://localhost:8080');
-
-        let maxTime = 30 * 60; // 30 minutes in seconds
+        var del_id = 0;
+        var agenda_id =$agenda_id;
+        var fd = new FormData();
+        let maxTime = 600 * 60; // 30 minutes in seconds
         let currentTime = 0;
         let timerInterval;
         let isPaused = true;
 
         ws.onmessage = function (event) {
             const data = JSON.parse(event.data);
-            if (data.action === 'start') {
-                startTimer();
+            if (data.action === 'stop') {
+            alert(currentTime);
+            saveLog(agenda_id, del_id, 0, currentTime);
+                //startTimer();
             } else if (data.action === 'pause') {
+             alert("pause");
                 pauseTimer();
-            }
-            else if (data.action === 'time'){
-          //alert(data.spk);
+                //Toggleplay();
+            } else if (data.action === 'start'){
+            //alert(data.spk);
              document.getElementById('Name').innerHTML = data.spk[0];
              document.getElementById('Hname').innerHTML = data.spk[1];
              document.getElementById('FParty').innerHTML = data.spk[2];
              document.getElementById('State').innerHTML = data.spk[3];
              document.getElementById('Div').innerHTML = data.spk[4];
-             document.getElementById('Party').innerHTML = data.time[0];
+             del_id = document.getElementById('Div').innerHTML = data.spk[5];
+             //document.getElementById('Party').innerHTML = data.time[0];
+             startTimer();
 
          }
         };
@@ -625,9 +632,13 @@ HEREDOC;
             const minutes = Math.floor((currentTime % 3600) / 60);
             const seconds = currentTime % 60;
             document.getElementById('spk-spoken').innerHTML = hours. toString() . padStart(2, '0') + ':' + minutes. toString() . padStart(2, '0') + ':' + seconds. toString() . padStart(2, '0');
-            console.log(hours. toString() . padStart(2, '0') + ':' + minutes. toString() . padStart(2, '0') + ':' + seconds. toString() . padStart(2, '0'));
+            //console.log(hours. toString() . padStart(2, '0') + ':' + minutes. toString() . padStart(2, '0') + ':' + seconds. toString() . padStart(2, '0'));
         }
-
+      function resetCounting() {
+          pauseCounting(); // Stop the timer if it's running          
+          document.getElementById('spk-spoken').innerHTML = '00:00:00';          
+          updateTimers();
+      }
         function startTimer() {
             if (isPaused) {
                 isPaused = false;
@@ -644,13 +655,41 @@ HEREDOC;
                 }, 1000);
             }
         }
-
+        function Toggleplay(){
+          if(pauseStaus===false){
+            pauseCounting();
+            pauseStaus = true;
+          } else {
+            startCounting();
+            pauseStaus = false;
+          }
+        }
         function pauseTimer() {
             isPaused = true;
             clearInterval(timerInterval);
         }
 
         updateTimer();
+        function saveLog(w,x,y,z){
+            fd.append('agenda_id', w);
+            fd.append('delegate_id', x);
+            fd.append('time_allotted', 0);
+            fd.append('time_taken', z);
+            fetch("/save-zero-hours-log.php",
+                  {
+                    method: 'POST',
+                    // mode : 'same-origin',
+                    // credentials: 'same-origin' ,
+                    body: fd
+                  })
+                  .then(function (response) {
+                    return response.text()
+                  }).then(function (text) {
+                    //text is the server's response              
+                    alert(text);
+                    
+                  });
+          }
       </script>
       HEREDOC;
   ?>

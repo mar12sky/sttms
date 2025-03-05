@@ -62,15 +62,14 @@
                     <th scope="col" class="text-left">STATE</th>
                     <th scope="col" class="text-left">-</th>
                     <!-- <th scope="col" class="text-left">PARTY</th> -->
-                    <th scope="col" class="text-left">ALLOTTED</th>
                     <th scope="col" class="text-left">TAKEN</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                 $pdo = pdo_connect_mysql();
-                $tlog = $pdo->prepare('SELECT * FROM agenda_meta ORDER BY agenda_meta_id DESC');
-                $tlog->execute();
+                $tlog = $pdo->prepare('SELECT * FROM agenda_meta WHERE agenda_id = ? ORDER BY agenda_meta_id DESC');
+                $tlog->execute([$_GET['agenda_id']]);
                 // Fetch the records so we can display them in our template.
                 $Timelogs = $tlog->fetchAll(PDO::FETCH_ASSOC);
                 foreach ($Timelogs as $Timelog) : $s + 1;
@@ -82,6 +81,7 @@
                         $stmt->execute([$Timelog['del_id']]);
                         $speaker = $stmt->fetch(PDO::FETCH_ASSOC);
                         if ($speaker): ?>
+
                             <td class="text-left text-bold"><?= $speaker['name_hi']; ?> <br> <?= $speaker['name_en']; ?> </td>
                             <td class="text-left text-bold"><?= strtoupper($speaker['state_name']); ?></td>
                             <td class="text-left">-</td>
@@ -96,7 +96,6 @@
                                 ?>
                             </td> -->
 
-                            <td class="text-left text-bold"><?= ftime($Timelog['time_allotted']) ?></td>
                             <td class="text-left text-bold"><?= ftime($Timelog['time_taken']) ?></td>
                     <?php endif;
                     endforeach;

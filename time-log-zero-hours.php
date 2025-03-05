@@ -69,8 +69,8 @@
             <tbody>
                 <?php
                 $pdo = pdo_connect_mysql();
-                $tlog = $pdo->prepare('SELECT * FROM agenda_meta ORDER BY agenda_meta_id DESC');
-                $tlog->execute();
+                $tlog = $pdo->prepare('SELECT * FROM agenda_meta WHERE agenda_id = ? ORDER BY agenda_meta_id DESC');
+                $tlog->execute([$_GET['agenda_id']]);
                 // Fetch the records so we can display them in our template.
                 $Timelogs = $tlog->fetchAll(PDO::FETCH_ASSOC);
                 foreach ($Timelogs as $Timelog) : $s + 1;

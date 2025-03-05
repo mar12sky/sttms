@@ -644,12 +644,14 @@ error_reporting(E_ALL);
                                                                                 </small>
                                                                                 <script>
                                                                                     function increaseTime() {
-                                                                                        alert(document.getElementById(
-                                                                                            "extraMinutes").value);
+                                                                                        /*alert(document.getElementById(
+                                                                                            "extraMinutes").value);*/
                                                                                         socket.send(JSON.stringify({
                                                                                             type: "incrementDown",
-                                                                                            value: document.getElementById(
-                                                                                                "extraMinutes").value
+                                                                                            value: parseInt(document
+                                                                                                .getElementById(
+                                                                                                    "extraMinutes").value *
+                                                                                                60)
                                                                                         }));
                                                                                         document.getElementById(
                                                                                             "extraMinutes").value = '';
@@ -783,12 +785,13 @@ error_reporting(E_ALL);
                                                                                                 .getElementById(
                                                                                                     "nt_<?= $speaker['div_no'] ?>").value;
                                                                                             socket.send(JSON.stringify({
-                                                                                                action: "time",
+                                                                                                action: "start",
                                                                                                 spk: ["<?= $speaker['name_en'] ?>",
                                                                                                     "<?= $speaker['name_hi'] ?>",
                                                                                                     "<?= $speaker['full_party_name'] ?>",
                                                                                                     "<?= $speaker['state_name'] ?>",
-                                                                                                    "<?= sprintf("%03d", $speaker['div_no']) ?>"
+                                                                                                    "<?= sprintf("%03d", $speaker['div_no']) ?>",
+                                                                                                    "<?= $speaker['id'] ?>"
                                                                                                 ],
                                                                                                 time: ["<?= $speaker['party'] ?>",
                                                                                                     "00:60:00",

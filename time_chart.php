@@ -200,9 +200,9 @@
                   <table id="example1" class="table table-bordered table-striped">
                     <thead>
                       <tr class="bg-success">
-                        <!-- <th style="width:30px">Sr. No.</th> -->
+                        <th style="width:30px">Sr. No.</th>
                         <th>Party</th>
-                        <th>Strength</th>
+                        <th>Nos.</th>
                         <th>1 Hour</th>
                         <th>1<sup>1/2</sup> Hrs.</th>
                         <th>2 Hrs.</th>
@@ -231,7 +231,7 @@
                       <?php foreach ($times as $time): $s + 1;
                         $s++ ?>
                         <tr>
-                          <!-- <td></td> -->
+                          <td><?= $s; ?></td>
                           <td class="text-bold"><?= $time['party'] ?></td>
                           <td><?= $time['strength'] ?></td>
                           <td><?= hrstominute($time['60_min']) ?></td>
@@ -255,7 +255,7 @@
                     </tbody>
                     <tfoot>
                       <tr class="bg-success">
-                        <!-- <th>Sr. No.</th> -->
+                        <th>S.N.</th>
                         <th>Party</th>
                         <th>Strength</th>
                         <th>1 Hour</th>
@@ -327,10 +327,10 @@
         "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
       }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
       $('#example2').DataTable({
-        "paging": true,
+        "paging": false,
         "lengthChange": false,
         "searching": false,
-        "ordering": true,
+        "ordering": false,
         "info": true,
         "autoWidth": false,
         "responsive": true,
