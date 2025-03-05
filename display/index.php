@@ -102,8 +102,8 @@
                     <td scope="col"><h1 style="font-weight: bold;">MEMBER</h1></td>
                     <td scope="col"><h1 id="spk-spoken">00:00:00</h1></td>
                     <td scope="col"><h1></h1><div id="controls">
-                        <button class="btn" onclick="startTimer()"><i class="fas fa-play"></i></button>
-                        <button class="btn" onclick="pauseTimer()"><i class="fas fa-pause"></i></button>
+                        <button class="btn d-none" onclick="startTimer()"><i class="fas fa-play"></i></button>
+                        <button class="btn d-none" onclick="pauseTimer()"><i class="fas fa-pause"></i></button>
                     </div></td>
                     <td scope="col"><h1></h1></td>
     
@@ -429,7 +429,7 @@ HEREDOC;
             } else if (data.action === 'stop'){
              pauseCounting();
              saveLog(agenda_id, del_id, alltime, secondsDown);            
-            alert(formatTime(secondsDown));
+            //alert(formatTime(secondsDown));
              resetCounting();
             } else if (data.action == 'message') {
              const messagesDisplay = document.getElementById('chairMessage');
@@ -463,7 +463,7 @@ HEREDOC;
                                   return response.text()
                                 }).then(function (text) {
                                   //text is the server's response              
-                                  alert(text);
+                                  //alert(text);
                                   
                                 });
                         }  
@@ -563,7 +563,7 @@ HEREDOC;
         // WebSocket message handling
         socket.addEventListener('message', (event) => {
             const data = JSON.parse(event.data);
-            alert(data);
+            //alert(data);
             if (data.type === 'incrementUp') {
                 secondsUp += data.value;
             } else if (data.type === 'incrementDown') {
@@ -573,7 +573,7 @@ HEREDOC;
             }else if (data.action === 'pause'){
             pauseCounting();
             } else if (data.action === 'stop'){
-            alert("STop counting");
+            //alert("STop counting");
             }
             updateTimers();
             }
@@ -606,13 +606,13 @@ HEREDOC;
         ws.onmessage = function (event) {
             const data = JSON.parse(event.data);
             if (data.action === 'stop') {
-            alert(currentTime);
+            //alert(currentTime);
             saveLog(agenda_id, del_id, 0, currentTime);
                 //startTimer();
             } else if (data.action === 'pause') {
-             alert("pause");
-                pauseTimer();
-                //Toggleplay();
+             //alert("pause");
+                Toggleplay();
+                
             } else if (data.action === 'start'){
             //alert(data.spk);
              document.getElementById('Name').innerHTML = data.spk[0];
@@ -656,12 +656,12 @@ HEREDOC;
             }
         }
         function Toggleplay(){
-          if(pauseStaus===false){
-            pauseCounting();
-            pauseStaus = true;
+          if(isPaused===false){
+            pauseTimer();
+            isPaused = true;
           } else {
-            startCounting();
-            pauseStaus = false;
+            startTimer();
+            isPaused = false;
           }
         }
         function pauseTimer() {
