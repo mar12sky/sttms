@@ -3,76 +3,16 @@ header("Access-Control-Allow-Origin: *");
 include 'connection.php';
 $pdo = pdo_connect_mysql();
 $data = '';
-if (!empty($_POST['action'])) {
-  try {
-    // Prepare the SQL statement
-    $stmt = $pdo->query("SELECT * FROM agenda WHERE agenda_status = 'open' ORDER BY agenda_id DESC LIMIT 1");
-
-    // Fetch the result
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    if (!$result) {
-      $title = isset($_POST['title']) ? $_POST['title'] : '';
-      $subtitle = isset($_POST['subtitle']) ? $_POST['subtitle'] : '';
-      $description = isset($_POST['description']) ? $_POST['description'] : '';
-      $type = isset($_POST['type']) ? $_POST['type'] : '';
-      $time = isset($_POST['time']) ? $_POST['time'] : '';
-      $date = isset($_POST['date']) ? $_POST['date'] : '';
-      $status = 'open';
-      $inthechair = isset($_POST['inthechair']) ? $_POST['inthechair'] : '';
-      $created = isset($_POST['created']) ? $_POST['created'] : date('Y-m-d H:i:s');
-      $stmt = $pdo->prepare('INSERT INTO agenda VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
-      $status = $stmt->execute([NULL, $title, $subtitle, $description, $type, $time, $date, $status, NULL, $inthechair, $created]);
-
-      // Output message
-      $count = $stmt->rowCount();
-      if ($count == 0) {
-        //header("Location: index.php?msg=Failed! in creating session");
-        $data = [
-          "status" => "error",
-          "title" => "Faild",
-          "heading" => "Faild",
-          "class" => "bg-danger",
-          "message" => "The Agenda could not be created"
-        ];
-      } else {
-        //header("Location: index.php?msg=Session started successfully!");
-        $data = [
-          "status" => "success",
-          "title" => "Success",
-          "heading" => "Success",
-          "class" => "bg-success",
-          "message" => "The new Agenda has been started successfuly"
-        ];
-      }
-    } else {
-      //echo "Active session exists.";
-      //header("Location: index.php?msg=A session is already active!");
-      $data = [
-        "status" => "warning",
-        "title" => "Warning",
-        "heading" => "Warning",
-        "class" => "bg-warning",
-        "message" => "A Agenda is already active"
-      ];
-      // $data=[
-      //     "status" =>"error",
-      //     "message" => "A Session is already active. Please Add Session first."
-      // ];
-
-    }
-  } catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
-  }
-}
-//echo json_encode($dat);
+//print_r($_POST);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Manage Sessions</title>
+    <title>STTMS | Logs</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -153,7 +93,7 @@ if (!empty($_POST['action'])) {
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
-                                with font-awesome or any other icon font library -->
+             with font-awesome or any other icon font library -->
                         <li class="nav-item menu-open">
                             <a href="index.php" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -174,15 +114,6 @@ if (!empty($_POST['action'])) {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="groups.php" class="nav-link">
-                                <i class="nav-icon far fa-circle text-warning"></i>
-                                <p>
-                                    Groups
-                                    <!-- <span class="right badge badge-danger">New</span> -->
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a href="delegates.php" class="nav-link">
                                 <i class="nav-icon far fa-circle text-warning"></i>
                                 <p>
@@ -191,21 +122,36 @@ if (!empty($_POST['action'])) {
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-file-excel"></i>
+                                <p>
+                                    Logs
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="time-log.php" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Time Allotment Log</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="list-speakers.php" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Speakers List Log</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
 
                         <li class="nav-item">
                             <a href="agenda.php" class="nav-link active">
                                 <i class="nav-icon fas fa-edit"></i>
                                 <p>
                                     Agenda
-                                    <!-- <span class="right badge badge-danger">New</span> -->
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="time_chart.php" class="nav-link">
-                                <i class="nav-icon fas fa-clock"></i>
-                                <p>
-                                    Time Chart
                                     <!-- <span class="right badge badge-danger">New</span> -->
                                 </p>
                             </a>
@@ -219,6 +165,7 @@ if (!empty($_POST['action'])) {
                                 </p>
                             </a>
                         </li>
+
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -233,18 +180,62 @@ if (!empty($_POST['action'])) {
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Add Session</h1>
+                            <h1>End Session</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Add Session</li>
+                                <li class="breadcrumb-item active">End Session</li>
                             </ol>
                         </div>
                     </div>
                 </div><!-- /.container-fluid -->
             </section>
 
+            <?php
+            if ($_POST['agenda_id']) {
+                try {
+                    // Prepare the SQL statement
+                    $stmt = $pdo->query("SELECT * FROM agenda WHERE agenda_status = 'open' ORDER BY agenda_id DESC LIMIT 1");
+
+                    // Fetch the result
+                    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    if ($result) {
+                        // Update status
+                        $newStatus = 'hold';
+                        $stmt = $pdo->prepare("UPDATE agenda SET agenda_status = :agenda_status WHERE agenda_id = :agenda_id");
+                        $stmt->bindParam(':agenda_status', $newStatus, PDO::PARAM_STR); // Assuming 'session_status' is a string
+                        $stmt->bindParam(':agenda_id', $result['agenda_id'], PDO::PARAM_INT); // Use the fetched agenda_id
+
+                        // Execute the prepared statement
+                        $stmt->execute();
+
+                        // Output message
+                        //echo "Session has been closed for attendance!";
+                        $data = [
+                            "status" => "success",
+                            "title" => "Success",
+                            "heading" => "Success",
+                            "class" => "bg-success",
+                            "message" => "The Agenda has been holded successfuly"
+                        ];
+                    } else {
+                    }
+                } catch (PDOException $e) {
+                    echo "Error: " . $e->getMessage();
+                }
+            } else {
+                $data = [
+                    "status" => "error",
+                    "title" => "Title",
+                    "heading" => "Error",
+                    "class" => "bg-danger",
+                    "message" => "The Agenda could not ended successfuly"
+                ];
+            }
+            //echo json_encode($data);
+            ?>
             <!-- Main content -->
             <section class="content" id="success">
 
@@ -267,9 +258,8 @@ if (!empty($_POST['action'])) {
                         <p><?= $data['message']; ?></p>
                     </div>
                     <!-- /.card-body -->
-                    <div class="card-footer">
-                        <a href="agenda.php" class="btn btn-primary">Go to Agenda</a>&nbsp;<a href="index.php"
-                            class="btn btn-primary float-right">Go to Dashboard</a>
+                    <div class="card-footer"><a href="index.php" class="btn btn-primary float-left">Go to Dashboard</a>
+                        &nbsp;<a href="agenda.php" class="btn btn-primary float-right">Go to Agenda</a>
                     </div>
                     <!-- /.card-footer-->
                 </div>
@@ -277,12 +267,13 @@ if (!empty($_POST['action'])) {
 
             </section>
             <!-- /.content -->
+
         </div>
         <!-- /.content-wrapper -->
 
         <footer class="main-footer d-none">
             <div class="float-right d-none d-sm-block">
-                <b>Version</b> 1.0.0
+                &nbsp;
             </div>
             <strong></strong>
         </footer>

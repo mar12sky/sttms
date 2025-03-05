@@ -69,7 +69,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
+                                with font-awesome or any other icon font library -->
                         <li class="nav-item menu-open">
                             <a href="index.php" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -90,6 +90,15 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="groups.php" class="nav-link active">
+                                <i class="nav-icon far fa-circle text-warning"></i>
+                                <p>
+                                    Groups
+                                    <!-- <span class="right badge badge-danger">New</span> -->
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="delegates.php" class="nav-link">
                                 <i class="nav-icon far fa-circle text-warning"></i>
                                 <p>
@@ -98,44 +107,21 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-file-excel"></i>
-                                <p>
-                                    Logs
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="time-log.php" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Time Allotment Log</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="list-speakers.php" class="nav-link">
-                                        <i class="nav-icon fab fa-speaker-deck"></i>
-                                        <p>
-                                            Speakers list
-                                            <!-- <span class="right badge badge-danger">New</span> -->
-                                        </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="list-speakers.php" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Speakers List Log</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
 
                         <li class="nav-item">
                             <a href="agenda.php" class="nav-link">
                                 <i class="nav-icon fas fa-edit"></i>
                                 <p>
                                     Agenda
+                                    <!-- <span class="right badge badge-danger">New</span> -->
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="time_chart.php" class="nav-link">
+                                <i class="nav-icon fas fa-clock"></i>
+                                <p>
+                                    Time Chart
                                     <!-- <span class="right badge badge-danger">New</span> -->
                                 </p>
                             </a>
@@ -149,7 +135,6 @@
                                 </p>
                             </a>
                         </li>
-
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->

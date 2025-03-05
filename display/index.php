@@ -2,55 +2,56 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display</title>
-    <link rel="stylesheet" href="./css/bootstrap.min.css"
-        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/custom.css">
-    <script src="./js/jquery-3.7.1.min.js"></script>
-    <link rel="stylesheet" href="./plugins/fontawesome-free/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Display</title>
+  <link rel="stylesheet" href="./css/bootstrap.min.css"
+    integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <link rel="stylesheet" href="./css/custom.css">
+  <script src="./js/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="./plugins/fontawesome-free/css/all.min.css">
 
-    <style>
+  <style>
     .self-center {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .red-border-bottom {
-        border-bottom: 5px solid red;
+      border-bottom: 5px solid red;
     }
 
     .red-border-top {
-        border-top: 5px solid red;
+      border-top: 5px solid red;
     }
 
     .tox-promotion {
-        display: none;
+      display: none;
     }
 
     .scrollable-container {
-        height: 300px;
-        overflow: scroll;
+      height: 300px;
+      overflow: scroll;
     }
 
     .my-inline-editor {
-        margin: 12px;
+      margin: 12px;
 
     }
 
     .tox-tinymce-inline {
-        z-index: 999999;
+      z-index: 999999;
     }
-    </style>
+  </style>
 </head>
 
 <body style="min-height:500px;">
-    <?php
+  <?php
   $mode = $_GET['mode'];
   $name = $_GET['inchair'];
   $subject = $_GET['subject'];
+  $agenda_id = $_GET['agenda_id'];
   $speaking = <<<HEREDOC
 <header class="container-fluid red-border-bottom top_details">
         <!-- <span class="align-middle d-block">middle</span> -->
@@ -234,11 +235,11 @@ HEREDOC;
                     <th scope="row" rowspan="3" class="col-2">
                         <img id="Spkimg" src="../pics/no-pic.png" alt="Name in English" class="gray-border img-fluid align-middle pic_size">
                     </th>
-                    <td scope="row" class="col-10"><h1 id="Name" class="font-weight-bold">Shri Name in English</h1></td>
+                    <td scope="row" class="col-10"><h1 id="Hname" class="font-weight-bold">हिंदी में नाम</h1></td>
                     
                   </tr>
                   <tr>
-                    <th scope="row"><h1 id="Hname" class="font-weight-bold">हिंदी में नाम</h1></th>
+                    <th scope="row"><h1 id="Name" class="font-weight-bold">Shri Name in English</h1></th>
                     
                   </tr>
                   <tr>
@@ -266,7 +267,7 @@ HEREDOC;
                   <tr>
                     <td scope="col"><h1><span id="MyDateDisplay" class="deligate-details" style="font-weight: bold;">00-00-0000</span></h1></td>
                     <td scope="col"><h1 style="font-weight: bold;">MEMBER</h1></td>
-                    <td scope="col"><h1 id="zero-alloted">00:03:00</h1></td>
+                    <td scope="col"><h1 id="zero-alloted">00:00:00</h1></td>
                     <td scope="col"><h1 id="zero-counterUp">00:00:00</h1></td>
                     <td scope="col"><h1 id="zero-counterDown">00:00:00</h1></td>
                   </tr>
@@ -274,8 +275,8 @@ HEREDOC;
                     <td scope="col"><h1><span id="MyClockDisplay" class="deligate-details font-weight-bold">00:00</span></h1></td>
                     <td scope="col"><h1 style="font-weight: bold;"></h1></td>
                     <td scope="col"><h1 id="partyTime"></h1></td>
-                    <td scope="col"><h1></h1><button class="btn" id="start"><i class="fas fa-play"></i></button>
-                    <button class="btn" id="pause"><i class="fas fa-pause"></i></button></td>
+                    <td scope="col"><h1></h1><button class="btn d-none" id="start"><i class="fas fa-play"></i></button>
+                    <button class="btn d-none" id="pause"><i class="fas fa-pause"></i></button></td>
                     <td scope="col"><h1></h1></td>
                   </tr>
                  
@@ -302,7 +303,7 @@ HEREDOC;
 HEREDOC;
   ?>
 
-    <?php
+  <?php
   switch ($mode) {
     case 'zero-hours':
       echo $zerohours;
@@ -318,20 +319,25 @@ HEREDOC;
   }
   ?>
 
-    <script src="./js/jquery.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-    </script>
-    <script src="./js/bootstrap.bundle.min.js"
-        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous">
-    </script>
-    <script src="./js/script.js"></script>
-    <?php
+  <script src="./js/jquery.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+  </script>
+  <script src="./js/bootstrap.bundle.min.js"
+    integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous">
+  </script>
+  <script src="./js/script.js"></script>
+  <?php
   $scriptzerohours = <<<HEREDOC
   <script>
     //alert('Zero Hours');
      let secondsUp = 0;
-        let secondsDown = 180; // 10 minutes in seconds
+        let secondsDown = 0; // 10 minutes in seconds
         let intervalId = null;
+        let pauseStaus = false;
+        var alltime = 0;
+        var del_id = 0;
+        var agenda_id =$agenda_id;
+        var fd = new FormData(); 
 
         const counterUpElement = document.getElementById('zero-counterUp');
         const counterDownElement = document.getElementById('zero-counterDown');
@@ -340,6 +346,15 @@ HEREDOC;
 
         const socket = new WebSocket('ws://localhost:8080');
         
+        function Toggleplay(){
+          if(pauseStaus===false){
+            pauseCounting();
+            pauseStaus = true;
+          } else {
+            startCounting();
+            pauseStaus = false;
+          }
+        }
         function formatTime(seconds) {
             const hours = String(Math.floor(seconds / 3600)).padStart(2, '0');
             const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
@@ -370,47 +385,88 @@ HEREDOC;
             }
         }
 
+        function resetCounting() {
+            pauseCounting(); // Stop the timer if it's running
+            secondsUp = 0;
+            secondsDown = 0; // Reset to 10 minutes
+            document.getElementById('zero-alloted').innerHTML = '00:00:00';
+            document.getElementById('zero-counterDown').innerHTML = '00:00:00';
+            updateTimers();
+        }
+        function incrementCounterDown() {
+            const incrementValue = parseInt(incrementDownInput.value) || 0;
+            secondsDown += incrementValue;
+            updateTimers();
+        }
+                
         startButton.addEventListener('click', startCounting);
         pauseButton.addEventListener('click', pauseCounting);
 
         updateTimers(); // Initialize the timers on page load
         socket.addEventListener('message', (event) => {
-            const data = JSON.parse(event.data);
-            //alert(data);
-            startCounting();
+            const data = JSON.parse(event.data);          
             if (data.type === 'incrementUp') {
                 secondsUp += data.value;
-            } else if (data.type === 'incrementDown') {
+            } else if (data.type === 'incrementDown') {             
+             document.getElementById('zero-alloted').innerHTML = formatTime(alltime += data.value);
                 secondsDown += data.value;
+                //alert(data.time[1]*60);                                                
             }else if (data.action === 'start'){
-            startCounting();
-            }else if (data.action === 'pause'){
-            alert('pause');
-            pauseCounting();
+            secondsDown = data.time[1]*60;
+           alltime = data.time[1]*60; 
+           document.getElementById('zero-alloted').innerHTML = formatTime(alltime);
+           startCounting();
+           document.getElementById('Name').innerHTML = data.spk[0];
+             document.getElementById('Hname').innerHTML = data.spk[1];
+             document.getElementById('FParty').innerHTML = data.spk[2];
+             document.getElementById('State').innerHTML = data.spk[3];
+             document.getElementById('Div').innerHTML = data.spk[4];
+             del_id = document.getElementById('Div').innerHTML = data.spk[5];
+             //document.getElementById('Party').innerHTML = data.time[0];
+            
+            }else if (data.action === 'pause'){            
+            Toggleplay();
             } else if (data.action === 'stop'){
              pauseCounting();
-            alert("STop counting");
-            alert(secondsDown);
+             saveLog(agenda_id, del_id, alltime, secondsDown);            
+            alert(formatTime(secondsDown));
+             resetCounting();
             } else if (data.action == 'message') {
              const messagesDisplay = document.getElementById('chairMessage');
              messagesDisplay.innerHTML = data.data;
              $('#chairMessage').removeClass('d-none');
              $('#chairMessage').addClass('d-block');
              $('#chairMessage').addClass('d-none');
-         } else if (data.action === 'time'){
-          //alert(data.spk);
-             document.getElementById('Name').innerHTML = data.spk[0];
-             document.getElementById('Hname').innerHTML = data.spk[1];
-             document.getElementById('FParty').innerHTML = data.spk[2];
-             document.getElementById('State').innerHTML = data.spk[3];
-             document.getElementById('Div').innerHTML = data.spk[4];
-             document.getElementById('Party').innerHTML = data.time[0];
+         } else if (data.action === 'details'){
+          //alert(data);
+             
 
          }
 
             updateTimers();
           
         });
+
+        function saveLog(w,x,y,z){
+                          fd.append('agenda_id', w);
+                          fd.append('delegate_id', x);
+                          fd.append('time_allotted', y);
+                          fd.append('time_taken', z);
+                          fetch("/save-zero-hours-log.php",
+                                {
+                                  method: 'POST',
+                                  // mode : 'same-origin',
+                                  // credentials: 'same-origin' ,
+                                  body: fd
+                                })
+                                .then(function (response) {
+                                  return response.text()
+                                }).then(function (text) {
+                                  //text is the server's response              
+                                  alert(text);
+                                  
+                                });
+                        }  
         
         // WebSocket connection error handling
         socket.addEventListener('error', (event) => {
@@ -598,7 +654,7 @@ HEREDOC;
       </script>
       HEREDOC;
   ?>
-    <?php
+  <?php
   switch ($mode) {
     case 'zero-hours':
       echo $scriptzerohours;

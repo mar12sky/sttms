@@ -7,7 +7,8 @@
     <title>STTMS | Agenda</title>
 
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- daterange picker -->
@@ -61,7 +62,8 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="index.php" class="brand-link">
-                <img src="dist/img/Logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <img src="dist/img/Logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+                    style="opacity: .8">
                 <span class="brand-text font-weight-normal">Operator</span>
             </a>
 
@@ -70,11 +72,12 @@
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
-             with font-awesome or any other icon font library -->
+                                with font-awesome or any other icon font library -->
                         <li class="nav-item menu-open">
-                            <a href="index.php" class="nav-link">
+                            <a href="index.php" class="nav-link active">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -93,6 +96,15 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="groups.php" class="nav-link">
+                                <i class="nav-icon far fa-circle text-warning"></i>
+                                <p>
+                                    Groups
+                                    <!-- <span class="right badge badge-danger">New</span> -->
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="delegates.php" class="nav-link">
                                 <i class="nav-icon far fa-circle text-warning"></i>
                                 <p>
@@ -101,36 +113,21 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-file-excel"></i>
-                                <p>
-                                    Logs
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="time-log.php" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Time Allotment Log</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="list-speakers.php" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Speakers List Log</p>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </li>
 
                         <li class="nav-item">
-                            <a href="agenda.php" class="nav-link active">
+                            <a href="agenda.php" class="nav-link">
                                 <i class="nav-icon fas fa-edit"></i>
                                 <p>
                                     Agenda
+                                    <!-- <span class="right badge badge-danger">New</span> -->
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="time_chart.php" class="nav-link">
+                                <i class="nav-icon fas fa-clock"></i>
+                                <p>
+                                    Time Chart
                                     <!-- <span class="right badge badge-danger">New</span> -->
                                 </p>
                             </a>
@@ -144,7 +141,6 @@
                                 </p>
                             </a>
                         </li>
-
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -178,80 +174,80 @@
                         <!-- <div class="col-12 p-1 mb-3">
                             <a href="./new-agenda.php" class="btn btn-primary btn-lg"><i class="fas fa-plus"></i> Add New Agenda</a>          
                         </div> -->
-                            <!-- -->
-                            <div class="card card-widget">
-                            <div class="card-header ui-sortable-handle bg-warning" style="cursor: move;">                
-                            <h3 class="card-title text-bold">
-                                <i class="fas fa-edit"></i>
-                                Agenda Details
-                            </h3>
-                            <!-- /.user-block -->
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" title="Mark as read">
-                                <i class="far fa-circle"></i>
-                                </button>
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                <i class="fas fa-times"></i>
-                                </button>
+                        <!-- -->
+                        <div class="card card-widget">
+                            <div class="card-header ui-sortable-handle bg-warning" style="cursor: move;">
+                                <h3 class="card-title text-bold">
+                                    <i class="fas fa-edit"></i>
+                                    Agenda Details
+                                </h3>
+                                <!-- /.user-block -->
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" title="Mark as read">
+                                        <i class="far fa-circle"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <!-- /.card-tools -->
                             </div>
-                            <!-- /.card-tools -->
-                            </div>
-                                <!-- /.card-header -->
-                                <div class="card-body">
+                            <!-- /.card-header -->
+                            <div class="card-body">
                                 <!-- Time details -->
                                 <div class="card card-widget widget-user-2 shadow-sm">
                                     <!-- Add the bg color to the header using any of the bg-* classes -->
-                                    
-                                    <div class="card-footer p-0">
-                                    <!-- post text -->
-                                <p>Far far away, behind the word mountains, far from the
-                                    countries Vokalia and Consonantia, there live the blind
-                                    texts. Separated they live in Bookmarksgrove right at</p>
 
-                                <p>the coast of the Semantics, a large language ocean.
-                                    A small river named Duden flows by their place and supplies
-                                    it with the necessary regelialia. It is a paradisematic
-                                    country, in which roasted parts of sentences fly into
-                                    your mouth.</p>
-                                    <span class="username">
-                                    <b>Speakers</b>
-                                    <!-- <span class="text-muted float-right">8:03 PM Today</span> -->
-                                    </span>
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            Party 1 <span class="float-right badge bg-primary">31</span>
-                                        </a>
-                                        </li>
-                                        <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            Party 2 <span class="float-right badge bg-info">5</span>
-                                        </a>
-                                        </li>
-                                        <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            Party 3 <span class="float-right badge bg-success">12</span>
-                                        </a>
-                                        </li>
-                                        <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            Party 4 <span class="float-right badge bg-danger">842</span>
-                                        </a>
-                                        </li>
-                                    </ul>
+                                    <div class="card-footer p-0">
+                                        <!-- post text -->
+                                        <p>Far far away, behind the word mountains, far from the
+                                            countries Vokalia and Consonantia, there live the blind
+                                            texts. Separated they live in Bookmarksgrove right at</p>
+
+                                        <p>the coast of the Semantics, a large language ocean.
+                                            A small river named Duden flows by their place and supplies
+                                            it with the necessary regelialia. It is a paradisematic
+                                            country, in which roasted parts of sentences fly into
+                                            your mouth.</p>
+                                        <span class="username">
+                                            <b>Speakers</b>
+                                            <!-- <span class="text-muted float-right">8:03 PM Today</span> -->
+                                        </span>
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    Party 1 <span class="float-right badge bg-primary">31</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    Party 2 <span class="float-right badge bg-info">5</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    Party 3 <span class="float-right badge bg-success">12</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    Party 4 <span class="float-right badge bg-danger">842</span>
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                                 <!-- Time details -->
 
-                                
-                                </div>
-                                <!-- /.card-body -->
-                                
+
                             </div>
-                            <!-- -->
+                            <!-- /.card-body -->
+
+                        </div>
+                        <!-- -->
                         <!-- Add New Agenda -->
                         <div class="card col-12 p-1">
                             <div class="card-header bg-warning">
@@ -280,36 +276,42 @@
                                                 </div>
                                             </div> -->
                                             <div class="card-body">
-                                            <div class="row">
-                                            <div class="form-group col-6">
-                                                <label>Speaker</label>
-                                                <select class="form-control select2bs4" style="width: 100%;">
-                                                    <option selected="selected">Alabama</option>
-                                                    <option>Alaska</option>
-                                                    <option>California</option>
-                                                    <option>Delaware</option>
-                                                    <option>Tennessee</option>
-                                                    <option>Texas</option>
-                                                    <option>Washington</option>
-                                                </select>
-                                            </div>
-                                            <div class="bootstrap-timepicker">
-                                                <div class="form-group col-6">
-                                                    <label>Time picker:</label>
-
-                                                    <div class="input-group date" id="timepicker" data-target-input="nearest">
-                                                        <input type="text" class="form-control datetimepicker-input" data-target="#timepicker" />
-                                                        <div class="input-group-append" data-target="#timepicker" data-toggle="datetimepicker">
-                                                            <div class="input-group-text"><i class="far fa-clock"></i></div>
-                                                        </div>
+                                                <div class="row">
+                                                    <div class="form-group col-6">
+                                                        <label>Speaker</label>
+                                                        <select class="form-control select2bs4" style="width: 100%;">
+                                                            <option selected="selected">Alabama</option>
+                                                            <option>Alaska</option>
+                                                            <option>California</option>
+                                                            <option>Delaware</option>
+                                                            <option>Tennessee</option>
+                                                            <option>Texas</option>
+                                                            <option>Washington</option>
+                                                        </select>
                                                     </div>
-                                                    <!-- /.input group -->
+                                                    <div class="bootstrap-timepicker">
+                                                        <div class="form-group col-6">
+                                                            <label>Time picker:</label>
+
+                                                            <div class="input-group date" id="timepicker"
+                                                                data-target-input="nearest">
+                                                                <input type="text"
+                                                                    class="form-control datetimepicker-input"
+                                                                    data-target="#timepicker" />
+                                                                <div class="input-group-append"
+                                                                    data-target="#timepicker"
+                                                                    data-toggle="datetimepicker">
+                                                                    <div class="input-group-text"><i
+                                                                            class="far fa-clock"></i></div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- /.input group -->
+                                                        </div>
+                                                        <!-- /.form group -->
+                                                    </div>
                                                 </div>
-                                                <!-- /.form group -->
-                                            </div>
-                                            </div>
                                                 <!-- end row -->
-                                                
+
                                                 <!-- <div class="form-group">
                                                     <label for="inputClientCompany">Client Company</label>
                                                     <input type="text" id="inputClientCompany" class="form-control">
@@ -318,7 +320,8 @@
                                                     <label for="inputProjectLeader">Project Leader</label>
                                                     <input type="text" id="inputProjectLeader" class="form-control">
                                                 </div> -->
-                                                <button type="button" class="btn btn-primary float-right"><i class="fas fa-plus"></i> Add item</button>
+                                                <button type="button" class="btn btn-primary float-right"><i
+                                                        class="fas fa-plus"></i> Add item</button>
                                             </div>
                                             <!-- /.card-body -->
                                         </div>
@@ -327,7 +330,7 @@
 
                                 </div>
                             </div>
-                            
+
                             <!-- /.card-body -->
                             <!-- <div class="card-footer">
                                 &nbsp;
@@ -432,13 +435,15 @@
                         'Last 7 Days': [moment().subtract(6, 'days'), moment()],
                         'Last 30 Days': [moment().subtract(29, 'days'), moment()],
                         'This Month': [moment().startOf('month'), moment().endOf('month')],
-                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
+                            'month').endOf('month')]
                     },
                     startDate: moment().subtract(29, 'days'),
                     endDate: moment()
                 },
                 function(start, end) {
-                    $('#reportrange span').php(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+                    $('#reportrange span').php(start.format('MMMM D, YYYY') + ' - ' + end.format(
+                        'MMMM D, YYYY'))
                 }
             )
 

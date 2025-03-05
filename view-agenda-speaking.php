@@ -22,24 +22,24 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <style>
-        #sortable1,
-        #sortable2 {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            margin-right: 10px;
-            float: left;
-            margin-bottom: 10px;
-        }
+    #sortable1,
+    #sortable2 {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        margin-right: 10px;
+        float: left;
+        margin-bottom: 10px;
+    }
 
-        #sortable1 li,
-        #sortable2 li {
-            margin: 5px;
-            padding: 5px;
-            font-size: 1.2em;
-            height: 1.5em;
-            border: 1PX solid #333;
-        }
+    #sortable1 li,
+    #sortable2 li {
+        margin: 5px;
+        padding: 5px;
+        font-size: 1.2em;
+        height: 1.5em;
+        border: 1PX solid #333;
+    }
     </style>
 </head>
 
@@ -92,7 +92,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
+                                with font-awesome or any other icon font library -->
                         <li class="nav-item menu-open">
                             <a href="index.php" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -113,7 +113,16 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="delegates.php" class="nav-link ">
+                            <a href="groups.php" class="nav-link">
+                                <i class="nav-icon far fa-circle text-warning"></i>
+                                <p>
+                                    Groups
+                                    <!-- <span class="right badge badge-danger">New</span> -->
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="delegates.php" class="nav-link">
                                 <i class="nav-icon far fa-circle text-warning"></i>
                                 <p>
                                     Delegates
@@ -121,36 +130,21 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-file-excel"></i>
-                                <p>
-                                    Logs
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="time-log.php" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Time Allotment Log</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="list-speakers.php" class="nav-link active">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Speakers List Log</p>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </li>
 
                         <li class="nav-item">
                             <a href="agenda.php" class="nav-link active">
                                 <i class="nav-icon fas fa-edit"></i>
                                 <p>
                                     Agenda
+                                    <!-- <span class="right badge badge-danger">New</span> -->
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="time_chart.php" class="nav-link">
+                                <i class="nav-icon fas fa-clock"></i>
+                                <p>
+                                    Time Chart
                                     <!-- <span class="right badge badge-danger">New</span> -->
                                 </p>
                             </a>
@@ -164,7 +158,6 @@
                                 </p>
                             </a>
                         </li>
-
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -208,7 +201,7 @@
                                         $stmt = $pdo->prepare('SELECT * FROM agenda WHERE agenda_id = ?');
                                         $stmt->execute([$_GET['agenda_id']]);
                                         $contact = $stmt->fetch(PDO::FETCH_ASSOC); ?>
-                                        <h3 class="card-title text-bold"><?= $contact['agenda_title'] ?></h3>
+                                    <h3 class="card-title text-bold"><?= $contact['agenda_title'] ?></h3>
                                     <?php if (!$contact) {
                                             exit('Session doesn\'t exist with that ID!');
                                         }
@@ -302,9 +295,9 @@
                                                     ?>
                                                     <ul id="sortable1" class="connectedSortable">
                                                         <?php foreach ($contacts as $contact): ?>
-                                                            <li id="<?= $contact['id'] ?>" class="ui-state-default"
-                                                                style="cursor:move; font-weight:bold; text-align:center; width:50px; height:40px; float:left; font-size:16px; line-height:40px;">
-                                                                <?= $contact['div_no'] ?></li>
+                                                        <li id="<?= $contact['id'] ?>" class="ui-state-default"
+                                                            style="cursor:move; font-weight:bold; text-align:center; width:50px; height:40px; float:left; font-size:16px; line-height:40px;">
+                                                            <?= $contact['div_no'] ?></li>
                                                         <?php endforeach; ?>
                                                     </ul>
 
@@ -359,28 +352,28 @@
                                             </div>
                                         </div>
                                         <script>
-                                            $(function() {
-                                                $(".connectedSortable").sortable({
-                                                    connectWith: ".connectedSortable"
-                                                }).disableSelection();
-                                            });
+                                        $(function() {
+                                            $(".connectedSortable").sortable({
+                                                connectWith: ".connectedSortable"
+                                            }).disableSelection();
+                                        });
 
-                                            $("#saveOrder").click(function() {
-                                                var order = $("#sortable2").sortable("toArray");
-                                                $.ajax({
-                                                    url: 'save_speaker.php',
-                                                    method: 'POST',
+                                        $("#saveOrder").click(function() {
+                                            var order = $("#sortable2").sortable("toArray");
+                                            $.ajax({
+                                                url: 'save_speaker.php',
+                                                method: 'POST',
 
-                                                    data: {
-                                                        order: order,
-                                                        agenda_id: <?= $_GET['agenda_id'] ?>
-                                                    },
-                                                    success: function(response) {
-                                                        alert('Speakers added successfully');
-                                                        //alert(response);
-                                                    }
-                                                });
+                                                data: {
+                                                    order: order,
+                                                    agenda_id: <?= $_GET['agenda_id'] ?>
+                                                },
+                                                success: function(response) {
+                                                    alert('Speakers added successfully');
+                                                    //alert(response);
+                                                }
                                             });
+                                        });
                                         </script>
                                     </div>
 
@@ -429,23 +422,23 @@
     <script src="dist/js/demo.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function() {
-            $("#example1").DataTable({
-                "responsive": true,
-                "lengthChange": true,
-                "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
-            });
+    $(function() {
+        $("#example1").DataTable({
+            "responsive": true,
+            "lengthChange": true,
+            "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
         });
+    });
     </script>
 </body>
 

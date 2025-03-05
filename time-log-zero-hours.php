@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speakers List Log</title>
+    <title>Speakers Time Log</title>
     <script type="text/javascript" src="plugins/jquery/jquery.slim.min.js"></script>
     <!-- Google Font: Source Sans Pro -->
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"> -->
@@ -46,7 +46,7 @@
             } else {
                 //echo " Agenda Found";
                 echo '<h2 class="text-center mb-3 mt-5">' . $agenda['agenda_title'] . '</h2>';
-                echo '<h3 class="text-center mb-1">LIST OF SPEAKERS</h3>';
+                echo '<h3 class="text-center mb-1">TIME ALLOTMENT LOG - ' . strtoupper($agenda['agenda_type']) . '</h3>';
                 echo '<strong class="text-center mb-5 d-block">(' . date("d-m-Y", strtotime($agenda['agenda_date'])) . ')</strong>';
             }
         } else {
@@ -61,38 +61,46 @@
                     <th scope="col" class="text-left">SPEAKER'S NAME</th>
                     <th scope="col" class="text-left">STATE</th>
                     <th scope="col" class="text-left">-</th>
-                    <th scope="col" class="text-left">PARTY</th>
+                    <!-- <th scope="col" class="text-left">PARTY</th> -->
+                    <th scope="col" class="text-left">ALLOTTED</th>
+                    <th scope="col" class="text-left">TAKEN</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-
-                $s = 0;
-                foreach ($speaker_list as $speaker) :
-                    $s + 1;
-                    $s++;
-                    $stmt = $pdo->prepare('SELECT * FROM delegates WHERE id = ?');
-                    $stmt->execute([$speaker]);
-                    $speaker = $stmt->fetch(PDO::FETCH_ASSOC);
-                    if ($speaker): ?>
-
-                        <tr>
-                            <th scope="row"><?= $s; ?></th>
+                $pdo = pdo_connect_mysql();
+                $tlog = $pdo->prepare('SELECT * FROM agenda_meta ORDER BY agenda_meta_id DESC');
+                $tlog->execute();
+                // Fetch the records so we can display them in our template.
+                $Timelogs = $tlog->fetchAll(PDO::FETCH_ASSOC);
+                foreach ($Timelogs as $Timelog) : $s + 1;
+                    $s++; ?>
+                    <tr>
+                        <th scope="row"><?= $s; ?></th>
+                        <?php
+                        $stmt = $pdo->prepare('SELECT * FROM delegates WHERE id = ?');
+                        $stmt->execute([$Timelog['del_id']]);
+                        $speaker = $stmt->fetch(PDO::FETCH_ASSOC);
+                        if ($speaker): ?>
                             <td class="text-left text-bold"><?= $speaker['name_hi']; ?> <br> <?= $speaker['name_en']; ?> </td>
-                            <td class="text-left text-bold"><?= $speaker['state_name']; ?></td>
+                            <td class="text-left text-bold"><?= strtoupper($speaker['state_name']); ?></td>
                             <td class="text-left">-</td>
 
 
-                            <td class="text-left text-bold">
-                                <?php if ($speaker['group_name'] != $speaker['party']) {
-                                    echo strtoupper($speaker['group_name']) . ' [' . $speaker['party'] . ']';
-                                } else {
-                                    echo $speaker['party'];
-                                } ?>
-                            </td>
-                        </tr>
-                <?php endif;
-                endforeach; ?>
+                            <!-- <td class="text-left text-bold">
+                                <?php //if ($speaker['group_name'] != $speaker['party']) {
+                                //echo strtoupper($speaker['group_name']) . ' [' . $speaker['party'] . ']';
+                                //} else {
+                                //    echo $speaker['party'];
+                                //} 
+                                ?>
+                            </td> -->
+
+                            <td class="text-left text-bold"><?= ftime($Timelog['time_allotted']) ?></td>
+                            <td class="text-left text-bold"><?= ftime($Timelog['time_taken']) ?></td>
+                    <?php endif;
+                    endforeach;
+                    ?>
 
 
             </tbody>

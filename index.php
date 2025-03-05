@@ -98,7 +98,7 @@ error_reporting(E_ALL);
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
+                                with font-awesome or any other icon font library -->
                         <li class="nav-item menu-open">
                             <a href="index.php" class="nav-link active">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -136,38 +136,7 @@ error_reporting(E_ALL);
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-file-excel"></i>
-                                <p>
-                                    Logs
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="time-log.php" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Time Allotment Log</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="list-speakers.php" class="nav-link">
-                                        <i class="nav-icon fab fa-speaker-deck"></i>
-                                        <p>
-                                            Speakers list
-                                            <!-- <span class="right badge badge-danger">New</span> -->
-                                        </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="list-speakers.php" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Speakers List Log</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+
                         <li class="nav-item">
                             <a href="agenda.php" class="nav-link">
                                 <i class="nav-icon fas fa-edit"></i>
@@ -614,7 +583,7 @@ error_reporting(E_ALL);
                                                                 <i class="ion ion-clipboard mr-1"></i>
                                                                 MODE: <?= strtoupper($contact['agenda_type']) ?>
                                                             </h3>
-                                                            <a href="http://<?= $_SERVER['HTTP_HOST']; ?>/display/?mode=<?= $contact['agenda_type'] ?>&subject=<?= $contact['agenda_title'] ?>&inchair=<?= $contact['in_the_chair'] ?>"
+                                                            <a href="http://<?= $_SERVER['HTTP_HOST']; ?>/display/?mode=<?= $contact['agenda_type'] ?>&agenda_id=<?= $contact['agenda_id'] ?>&subject=<?= $contact['agenda_title'] ?>&inchair=<?= $contact['in_the_chair'] ?>"
                                                                 target="_blank" class="btn btn-tool"
                                                                 title="View in new window">
                                                                 <i class="fas fa-external-link-alt"></i></a>
@@ -664,9 +633,28 @@ error_reporting(E_ALL);
                                                                                     <input type="text"
                                                                                         name="nt_<?= $speaker['div_no'] ?>"
                                                                                         id="nt_<?= $speaker['div_no'] ?>" class="d-none"
-                                                                                        value="00:00:03" style="width: 50%;"
-                                                                                        placeholder="--:--">
+                                                                                        value="" style="width: 50%;"
+                                                                                        placeholder="Nums only">
                                                                                 </span>
+                                                                                <small class="badge">
+                                                                                    <button class="border-light h3" data-toggle="modal"
+                                                                                        data-target="#timeModify">
+                                                                                        <i class="fas fa-clock"></i>
+                                                                                    </button>
+                                                                                </small>
+                                                                                <script>
+                                                                                    function increaseTime() {
+                                                                                        alert(document.getElementById(
+                                                                                            "extraMinutes").value);
+                                                                                        socket.send(JSON.stringify({
+                                                                                            type: "incrementDown",
+                                                                                            value: document.getElementById(
+                                                                                                "extraMinutes").value
+                                                                                        }));
+                                                                                        document.getElementById(
+                                                                                            "extraMinutes").value = '';
+                                                                                    }
+                                                                                </script>
                                                                                 <small class="badge badge-danger"><i
                                                                                         class="far fa-clock"></i> 3 mins</small>
                                                                                 <!-- Emphasis label -->
@@ -683,15 +671,16 @@ error_reporting(E_ALL);
                                                                                                 .getElementById(
                                                                                                     "nt_<?= $speaker['div_no'] ?>").value;
                                                                                             socket.send(JSON.stringify({
-                                                                                                action: "time",
+                                                                                                action: "start",
                                                                                                 spk: ["<?= $speaker['name_en'] ?>",
                                                                                                     "<?= $speaker['name_hi'] ?>",
                                                                                                     "<?= $speaker['full_party_name'] ?>",
                                                                                                     "<?= $speaker['state_name'] ?>",
-                                                                                                    "<?= sprintf("%03d", $speaker['div_no']) ?>"
+                                                                                                    "<?= sprintf("%03d", $speaker['div_no']) ?>",
+                                                                                                    "<?= $speaker['id'] ?>"
                                                                                                 ],
                                                                                                 time: ["<?= $speaker['party'] ?>",
-                                                                                                    "00:60:00",
+                                                                                                    3,
                                                                                                     atime_<?= $speaker['div_no'] ?>
                                                                                                 ]
                                                                                             }));
@@ -817,7 +806,12 @@ error_reporting(E_ALL);
                                                                                         <i class="fas fa-pause"></i>
                                                                                     </button>
                                                                                 </small>
-
+                                                                                <small class="badge">
+                                                                                    <button class="border-light h3"
+                                                                                        onclick="stopSpeaking();">
+                                                                                        <i class="fas fa-stop"></i>
+                                                                                    </button>
+                                                                                </small>
                                                                                 <span class="text"><?= $speaker['name_en'] ?></span>
                                                                                 <script>
                                                                                     function extraTime() {
@@ -951,6 +945,45 @@ error_reporting(E_ALL);
                                                     </div>
                                                 </div>
                                                 <!-- /.card -->
+                                                <!-- modal -->
+                                                <div class="modal afde" id="timeModify" tabindex="-1">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title"><i class="fas fa-clock"></i>
+                                                                    Modify Speaker Time</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Please enter time in minutes.</p>
+                                                                <form class="form-inline" action="#" method="post">
+
+                                                                    <label class="sr-only"
+                                                                        for="extraMinutes">Time</label>
+                                                                    <div class="input-group mb-2 mr-sm-2">
+                                                                        <div class="input-group-prepend">
+                                                                            <div class="input-group-text"><i
+                                                                                    class="fas fa-clock"></i></div>
+                                                                        </div>
+                                                                        <input type="text" class="form-control"
+                                                                            id="extraMinutes" name="extraMinutes"
+                                                                            placeholder="00">
+                                                                    </div>
+                                                                    <button type="button" id="increaseTimebtn"
+                                                                        class="btn btn-primary mb-2"
+                                                                        onclick="increaseTime()">Submit</button>
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                &nbsp;
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- modal -->
                                                 <div class="card d-none">
                                                     <div class="card-header">
                                                         <h3 class="card-title">Log Manager</h3>
