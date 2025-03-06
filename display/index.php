@@ -43,6 +43,11 @@
     .tox-tinymce-inline {
         z-index: 999999;
     }
+
+    .pic_size {
+        width: 205px !important;
+        height: 235px !important;
+    }
     </style>
 </head>
 
@@ -162,8 +167,8 @@ HEREDOC;
                   <tr>
                     <th scope="row"><h1><span id="FParty">Name of Party</span>, <span id="State" style="text-transform:Capitalize">State</span><input class="d-none" type="number" id="incrementUpInput" placeholder="Increment Up (seconds)" />
     <button class="d-none" id="incrementUp">Increment Up</button><input class="d-none" type="number" id="incrementDownInput" placeholder="Increment Down (seconds)" />
-        <button class="d-none" id="incrementDown">Increment Down</button><button id="start" class="btn"><i class="fas fa-play"></i></button>
-    <button id="pause" class="btn"><i class="fas fa-pause"></i></button></h1></th>
+        <button class="d-none" id="incrementDown">Increment Down</button><button id="start" class="btn d-none"><i class="fas fa-play"></i></button>
+    <button id="pause" class="btn d-none"><i class="fas fa-pause"></i></button></h1></th>
                     
                 </tbody>
               </table>
@@ -490,6 +495,9 @@ HEREDOC;
         let psecondsUp = 0;
         let psecondsDown = partytimer; //60; // 10 minutes in seconds
         let intervalId = null;
+        isPaused = false;
+         var agenda_id =$agenda_id;
+        var fd = new FormData();
 
         const counterUpElement = document.getElementById('spoken');
         const counterDownElement = document.getElementById('remaining');
@@ -505,16 +513,16 @@ HEREDOC;
         // Initialize WebSocket connection
         const socket = new WebSocket('ws://localhost:8080'); // Replace with your WebSocket server URL
 
+        
+
          socket.onmessage = function (event) {
             const data = JSON.parse(event.data);
             if (data.action === 'stop') {
-            //alert(currentTime);
-            saveLog(agenda_id, del_id, 0, currentTime);
-                //startTimer();
-            } else if (data.action === 'pause') {
-             //alert("pause");
-                Toggleplay();
-                
+            //alert('allotted' + parseInt(secondsDown+secondsUp) +'taken' +secondsUp +'--'+'Party allotted'+ parseInt(psecondsDown+psecondsUp) +' Taken '+psecondsUp);
+            saveLog(agenda_id, del_id, parseInt(psecondsDown+psecondsUp), psecondsUp, parseInt(secondsDown+secondsUp), secondsUp);
+                        
+            } else if (data.action === 'pause') {             
+                Toggleplay();                
             } else if (data.action === 'start'){
             //alert(data.spk);
              document.getElementById('Name').innerHTML = data.spk[0];
@@ -525,7 +533,7 @@ HEREDOC;
              del_id = document.getElementById('Div').innerHTML = data.spk[5];
              document.getElementById('Party').innerHTML = data.time[0];
              document.getElementById("Spkimg").src='../pics/'+data.spk[6];
-             startTimer();
+             startCounting();
 
          }
         };
@@ -579,6 +587,29 @@ HEREDOC;
             socket.send(JSON.stringify({ type: 'incrementDown', value: incrementValue }));
         }
 
+        function saveLog(u,v, w,x,y,z){
+          fd.append('agenda_id', u);
+          fd.append('delegate_id', v);
+          fd.append('party_time_allotted', w);
+          fd.append('party_time_taken', x);
+          fd.append('time_allotted', y);
+          fd.append('time_taken', z);
+          fetch("/save-discussion-log.php",
+                {
+                  method: 'POST',
+                  // mode : 'same-origin',
+                  // credentials: 'same-origin' ,
+                  body: fd
+                })
+                .then(function (response) {
+                  return response.text()
+                }).then(function (text) {
+                  //text is the server's response              
+                  //alert(text);
+                  
+                });
+        }  
+
         startButton.addEventListener('click', startCounting);
         pauseButton.addEventListener('click', pauseCounting);
         incrementUpButton.addEventListener('click', incrementCounterUp);
@@ -586,24 +617,15 @@ HEREDOC;
 
         updateTimers(); // Initialize the timers on page load
 
-        // WebSocket message handling
-        socket.addEventListener('message', (event) => {
-            const data = JSON.parse(event.data);
-            //alert(data);
-            if (data.type === 'incrementUp') {
-                secondsUp += data.value;
-            } else if (data.type === 'incrementDown') {
-                secondsDown += data.value;
-            } else if (data.action === 'start'){
-            startCounting();
-            }else if (data.action === 'pause'){
+        function Toggleplay(){
+          if(isPaused===false){
             pauseCounting();
-            } else if (data.action === 'stop'){
-            //alert("STop counting");
-            }
-            updateTimers();
-            }
-        });
+            isPaused = true;
+          } else {
+            startCounting();
+            isPaused = false;
+          }
+        }
 
         // WebSocket connection error handling
         socket.addEventListener('error', (event) => {
@@ -713,7 +735,7 @@ HEREDOC;
                     return response.text()
                   }).then(function (text) {
                     //text is the server's response              
-                    alert(text);
+                    //alert(text);
                     
                   });
           }

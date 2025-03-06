@@ -68,26 +68,26 @@
             <tbody>
                 <?php
                 $pdo = pdo_connect_mysql();
-                $tlog = $pdo->prepare('SELECT * FROM agenda_meta WHERE agenda_id = ? ORDER BY agenda_meta_id DESC');
+                $tlog = $pdo->prepare('SELECT * FROM agenda_meta WHERE agenda_id = ? ORDER BY agenda_meta_id ASC');
                 $tlog->execute([$_GET['agenda_id']]);
                 // Fetch the records so we can display them in our template.
                 $Timelogs = $tlog->fetchAll(PDO::FETCH_ASSOC);
                 foreach ($Timelogs as $Timelog) : $s + 1;
                     $s++; ?>
-                    <tr>
-                        <th scope="row"><?= $s; ?></th>
-                        <?php
+                <tr>
+                    <th scope="row"><?= $s; ?></th>
+                    <?php
                         $stmt = $pdo->prepare('SELECT * FROM delegates WHERE id = ?');
                         $stmt->execute([$Timelog['del_id']]);
                         $speaker = $stmt->fetch(PDO::FETCH_ASSOC);
                         if ($speaker): ?>
 
-                            <td class="text-left text-bold"><?= $speaker['name_hi']; ?> <br> <?= $speaker['name_en']; ?> </td>
-                            <td class="text-left text-bold"><?= strtoupper($speaker['state_name']); ?></td>
-                            <td class="text-left">-</td>
+                    <td class="text-left text-bold"><?= $speaker['name_hi']; ?> <br> <?= $speaker['name_en']; ?> </td>
+                    <td class="text-left text-bold"><?= strtoupper($speaker['state_name']); ?></td>
+                    <td class="text-left">-</td>
 
 
-                            <!-- <td class="text-left text-bold">
+                    <!-- <td class="text-left text-bold">
                                 <?php //if ($speaker['group_name'] != $speaker['party']) {
                                 //echo strtoupper($speaker['group_name']) . ' [' . $speaker['party'] . ']';
                                 //} else {
@@ -96,7 +96,7 @@
                                 ?>
                             </td> -->
 
-                            <td class="text-left text-bold"><?= ftime($Timelog['time_taken']) ?></td>
+                    <td class="text-left text-bold"><?= ftime($Timelog['time_taken']) ?></td>
                     <?php endif;
                     endforeach;
                     ?>
@@ -112,7 +112,7 @@
     <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
-        $.widget.bridge('uibutton', $.ui.button)
+    $.widget.bridge('uibutton', $.ui.button)
     </script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>

@@ -4,12 +4,12 @@ date_default_timezone_set("Asia/Kolkata");
 error_reporting(E_ALL);
 include 'connection.php';
 //var_dump($_POST);
-
+//die;
 $data = '';
 $agenda_id = isset($_POST['agenda_id']) ? $_POST['agenda_id'] : '';
 $del_id = isset($_POST['delegate_id']) ? $_POST['delegate_id'] : '';
-$party_time_allotted = 0;
-$party_time_taken = 0;
+$party_time_allotted = isset($_POST['party_time_allotted']) ? $_POST['party_time_allotted'] : '';
+$party_time_taken = isset($_POST['party_time_taken']) ? $_POST['party_time_taken'] : '';
 $time_allotted = isset($_POST['time_allotted']) ? $_POST['time_allotted'] : '';
 $time_taken = isset($_POST['time_taken']) ? $_POST['time_taken'] : '';
 $created = isset($_POST['created']) ? $_POST['created'] : date('Y-m-d H:i:s');

@@ -687,13 +687,6 @@ error_reporting(E_ALL);
                                                                                 atime_<?= $speaker['div_no'] ?>
                                                                             ]
                                                                         }));
-                                                                        // socket.send(JSON.stringify({
-                                                                        //     action: "time",
-                                                                        //     spk: ["AMIT SHAH", "BJP",
-                                                                        //         "UTTAR PRADESH", "003"
-                                                                        //     ],
-                                                                        //     time: ["60:00", "10:00"]
-                                                                        // }));
 
                                                                     }
                                                                     </script>
@@ -863,7 +856,6 @@ error_reporting(E_ALL);
                                                                 <span class="text">
                                                                     <div class="icheck-primary d-inline ml-2">
                                                                         <input type="checkbox" value=""
-                                                                            class="form-control form-control-sm"
                                                                             name="todo<?= $speaker['div_no'] ?>"
                                                                             id="todoCheck<?= $speaker['div_no'] ?>">
                                                                         <label
@@ -872,17 +864,37 @@ error_reporting(E_ALL);
                                                                 </span>
                                                                 <!-- todo text -->
                                                                 <span
-                                                                    class="text text-primary"><?= sprintf("%03d", $speaker['div_no']) ?></span>
+                                                                    class="text"><?= sprintf("%03d", $speaker['div_no']) ?></span>
                                                                 <span class="text">
                                                                     <input type="text"
                                                                         name="nt_<?= $speaker['div_no'] ?>"
-                                                                        id="nt_<?= $speaker['div_no'] ?>"
-                                                                        class="form-control form-control-sm"
-                                                                        style="width: 50%;" placeholder="--:--">
+                                                                        id="nt_<?= $speaker['div_no'] ?>" class="d-none"
+                                                                        value="" style="width: 50%;"
+                                                                        placeholder="Nums only">
                                                                 </span>
-                                                                <span
-                                                                    class="text text-danger"><?= $speaker['group_name'] ?></span>
-                                                                <!-- <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small> -->
+                                                                <small class="badge">
+                                                                    <button class="border-light h3" data-toggle="modal"
+                                                                        data-target="#timeModify">
+                                                                        <i class="fas fa-clock"></i>
+                                                                    </button>
+                                                                </small>
+                                                                <script>
+                                                                function increaseTime() {
+                                                                    /*alert(document.getElementById(
+                                                                        "extraMinutes").value);*/
+                                                                    socket.send(JSON.stringify({
+                                                                        type: "incrementDown",
+                                                                        value: parseInt(document
+                                                                            .getElementById(
+                                                                                "extraMinutes").value *
+                                                                            60)
+                                                                    }));
+                                                                    document.getElementById(
+                                                                        "extraMinutes").value = '';
+                                                                }
+                                                                </script>
+                                                                <small class="badge badge-danger"><i
+                                                                        class="far fa-clock"></i> 3 mins</small>
                                                                 <!-- Emphasis label -->
                                                                 <small class="badge">
                                                                     <button class="border-light h3"
@@ -892,11 +904,12 @@ error_reporting(E_ALL);
 
                                                                     <script>
                                                                     function startSpeaking_<?= $speaker['div_no'] ?>() {
+                                                                        //alert("Start Speaking");
                                                                         const atime_<?= $speaker['div_no'] ?> = document
                                                                             .getElementById(
                                                                                 "nt_<?= $speaker['div_no'] ?>").value;
                                                                         socket.send(JSON.stringify({
-                                                                            action: "time",
+                                                                            action: "start",
                                                                             spk: ["<?= $speaker['name_en'] ?>",
                                                                                 "<?= $speaker['name_hi'] ?>",
                                                                                 "<?= $speaker['full_party_name'] ?>",
@@ -906,11 +919,10 @@ error_reporting(E_ALL);
                                                                                 "<?= $speaker['pics'] ?>"
                                                                             ],
                                                                             time: ["<?= $speaker['party'] ?>",
-                                                                                "00:60:00",
+                                                                                3,
                                                                                 atime_<?= $speaker['div_no'] ?>
                                                                             ]
                                                                         }));
-                                                                        //socket.send(JSON.stringify({ action: "time", spk:["AMIT SHAH", "BJP", "UTTAR PRADESH","003"], time: ["60:00", "10:00"] }));
 
                                                                     }
                                                                     </script>
@@ -923,10 +935,11 @@ error_reporting(E_ALL);
                                                                 </small>
                                                                 <small class="badge">
                                                                     <button class="border-light h3"
-                                                                        onclick="extraTime();">
-                                                                        <i class="fas fa-clock"></i>
+                                                                        onclick="stopSpeaking();">
+                                                                        <i class="fas fa-stop"></i>
                                                                     </button>
                                                                 </small>
+
                                                                 <span class="text"><?= $speaker['name_en'] ?></span>
                                                                 <script>
                                                                 function extraTime() {
@@ -1081,15 +1094,6 @@ error_reporting(E_ALL);
     </script>
     <script>
     var socket = new WebSocket('ws://localhost:8080');
-
-    // function startSpeaking() {
-    //     alert('Starting Speaking');
-    //     socket.send(JSON.stringify({
-    //         action: "time",
-    //         spk: ["AMIT SHAH", "BJP", "UTTAR PRADESH", "003"],
-    //         time: ["60:00", "10:00"]
-    //     }));
-    // }
 
     function pauseSpeaking() {
         //alert('Pausing Speaking');
