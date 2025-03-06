@@ -2,52 +2,52 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Display</title>
-  <link rel="stylesheet" href="./css/bootstrap.min.css"
-    integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-  <link rel="stylesheet" href="./css/custom.css">
-  <script src="./js/jquery-3.7.1.min.js"></script>
-  <link rel="stylesheet" href="./plugins/fontawesome-free/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/custom.css">
+    <script src="./js/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="./plugins/fontawesome-free/css/all.min.css">
 
-  <style>
+    <style>
     .self-center {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .red-border-bottom {
-      border-bottom: 5px solid red;
+        border-bottom: 5px solid red;
     }
 
     .red-border-top {
-      border-top: 5px solid red;
+        border-top: 5px solid red;
     }
 
     .tox-promotion {
-      display: none;
+        display: none;
     }
 
     .scrollable-container {
-      height: 300px;
-      overflow: scroll;
+        height: 300px;
+        overflow: scroll;
     }
 
     .my-inline-editor {
-      margin: 12px;
+        margin: 12px;
 
     }
 
     .tox-tinymce-inline {
-      z-index: 999999;
+        z-index: 999999;
     }
-  </style>
+    </style>
 </head>
 
 <body style="min-height:500px;">
-  <?php
+    <?php
   $mode = $_GET['mode'];
   $name = $_GET['inchair'];
   $subject = $_GET['subject'];
@@ -303,7 +303,7 @@ HEREDOC;
 HEREDOC;
   ?>
 
-  <?php
+    <?php
   switch ($mode) {
     case 'zero-hours':
       echo $zerohours;
@@ -319,14 +319,14 @@ HEREDOC;
   }
   ?>
 
-  <script src="./js/jquery.slim.min.js"
-    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-  </script>
-  <script src="./js/bootstrap.bundle.min.js"
-    integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous">
-  </script>
-  <script src="./js/script.js"></script>
-  <?php
+    <script src="./js/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="./js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous">
+    </script>
+    <script src="./js/script.js"></script>
+    <?php
   $scriptzerohours = <<<HEREDOC
   <script>
     //alert('Zero Hours');
@@ -422,6 +422,7 @@ HEREDOC;
              document.getElementById('State').innerHTML = data.spk[3];
              document.getElementById('Div').innerHTML = data.spk[4];
              del_id = document.getElementById('Div').innerHTML = data.spk[5];
+             document.getElementById("Spkimg").src='../pics/'+data.spk[6];
              //document.getElementById('Party').innerHTML = data.time[0];
             
             }else if (data.action === 'pause'){            
@@ -503,6 +504,31 @@ HEREDOC;
 
         // Initialize WebSocket connection
         const socket = new WebSocket('ws://localhost:8080'); // Replace with your WebSocket server URL
+
+         socket.onmessage = function (event) {
+            const data = JSON.parse(event.data);
+            if (data.action === 'stop') {
+            //alert(currentTime);
+            saveLog(agenda_id, del_id, 0, currentTime);
+                //startTimer();
+            } else if (data.action === 'pause') {
+             //alert("pause");
+                Toggleplay();
+                
+            } else if (data.action === 'start'){
+            //alert(data.spk);
+             document.getElementById('Name').innerHTML = data.spk[0];
+             document.getElementById('Hname').innerHTML = data.spk[1];
+             document.getElementById('FParty').innerHTML = data.spk[2];
+             document.getElementById('State').innerHTML = data.spk[3];
+             document.getElementById('Div').innerHTML = data.spk[4];
+             del_id = document.getElementById('Div').innerHTML = data.spk[5];
+             document.getElementById('Party').innerHTML = data.time[0];
+             document.getElementById("Spkimg").src='../pics/'+data.spk[6];
+             startTimer();
+
+         }
+        };
 
         function formatTime(seconds) {
             const hours = String(Math.floor(seconds / 3600)).padStart(2, '0');
@@ -622,6 +648,7 @@ HEREDOC;
              document.getElementById('Div').innerHTML = data.spk[4];
              del_id = document.getElementById('Div').innerHTML = data.spk[5];
              //document.getElementById('Party').innerHTML = data.time[0];
+             document.getElementById("Spkimg").src='../pics/'+data.spk[6];
              startTimer();
 
          }
@@ -693,7 +720,7 @@ HEREDOC;
       </script>
       HEREDOC;
   ?>
-  <?php
+    <?php
   switch ($mode) {
     case 'zero-hours':
       echo $scriptzerohours;

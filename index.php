@@ -35,10 +35,10 @@ error_reporting(E_ALL);
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
     <style>
-        .direct-chat-messages {
-            height: 170px;
+    .direct-chat-messages {
+        height: 170px;
 
-        }
+    }
     </style>
 </head>
 
@@ -365,48 +365,48 @@ error_reporting(E_ALL);
                                         $num_contacts = $pdo->query('SELECT COUNT(*) FROM sessions')->fetchColumn();
                                         ?>
                                         <?php foreach ($contacts as $contact): ?>
-                                            <div class="col-md-12 col-sm-12 col-12">
-                                                <div class="info-box">
-                                                    <span class="info-box-icon bg-info"><i
-                                                            class="far fa-bookmark"></i></span>
-                                                    <div class="info-box-content">
-                                                        <span
-                                                            class="info-box-text fw-bold"><?= $contact['created_at'] ?></span>
-                                                        <span class="info-box-number"><?= $contact['agenda_title'] ?></span>
-                                                        <div class="progress">
-                                                            <div class="progress-bar bg-info" style="width: 70%"></div>
-                                                        </div>
-                                                        <span class="progress-description">
-                                                            <small>
-                                                                <a
-                                                                    href="view-agenda.php?agenda_id=<?= $contact['agenda_id'] ?>">View</a>
-                                                            </small>
-                                                            <small class="float-right">
-                                                                <form id="end-agenda-form" method="post"
-                                                                    action="end_agenda.php">
-                                                                    <input type="hidden" name="agenda_id" id="agenda_id"
-                                                                        value="<?= $contact['agenda_id'] ?>">
-                                                                    <button id="end_agenda"
-                                                                        class="btn btn-danger float-right"
-                                                                        data-session-id="<?= $contact['agenda_id'] ?>">End
-                                                                        Session</button>
-                                                                </form>
-                                                            </small>
-                                                        </span>
+                                        <div class="col-md-12 col-sm-12 col-12">
+                                            <div class="info-box">
+                                                <span class="info-box-icon bg-info"><i
+                                                        class="far fa-bookmark"></i></span>
+                                                <div class="info-box-content">
+                                                    <span
+                                                        class="info-box-text fw-bold"><?= $contact['created_at'] ?></span>
+                                                    <span class="info-box-number"><?= $contact['agenda_title'] ?></span>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-info" style="width: 70%"></div>
                                                     </div>
+                                                    <span class="progress-description">
+                                                        <small>
+                                                            <a
+                                                                href="view-agenda.php?agenda_id=<?= $contact['agenda_id'] ?>">View</a>
+                                                        </small>
+                                                        <small class="float-right">
+                                                            <form id="end-agenda-form" method="post"
+                                                                action="end_agenda.php">
+                                                                <input type="hidden" name="agenda_id" id="agenda_id"
+                                                                    value="<?= $contact['agenda_id'] ?>">
+                                                                <button id="end_agenda"
+                                                                    class="btn btn-danger float-right"
+                                                                    data-session-id="<?= $contact['agenda_id'] ?>">End
+                                                                    Session</button>
+                                                            </form>
+                                                        </small>
+                                                    </span>
                                                 </div>
                                             </div>
+                                        </div>
                                         <?php endforeach; ?>
 
                                     </div>
                                     <div class="pagination float-right p-3">
                                         <?php if ($page > 1): ?>
-                                            <a href="log.php?page=<?= $page - 1 ?>"><i
-                                                    class="fas fa-angle-double-left fa-lg"></i></a>
+                                        <a href="log.php?page=<?= $page - 1 ?>"><i
+                                                class="fas fa-angle-double-left fa-lg"></i></a>
                                         <?php endif; ?>
                                         <?php if ($page * $records_per_page < $num_contacts): ?>
-                                            <a href="log.php?page=<?= $page + 1 ?>"><i
-                                                    class="fas fa-angle-double-right fa-lg ml-3"></i></a>
+                                        <a href="log.php?page=<?= $page + 1 ?>"><i
+                                                class="fas fa-angle-double-right fa-lg ml-3"></i></a>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -467,44 +467,44 @@ error_reporting(E_ALL);
                         <section class="col-lg-12 connectedSortable">
                             <!-- Custom tabs (Charts with tabs)-->
                             <?php if ($contact['agenda_type'] == 'discussion') : ?>
-                                <?php $agenda_time = 0; ?>
-                                <div class="card">
-                                    <!-- -->
-                                    <div class="card-body">
-                                        <table class="table table-bordered">
-                                            <tbody>
-                                                <tr>
-                                                    <td style="width: 50%;">
-                                                        <p class="font-weight-bold">MINISTER'S TIME: <?php if ($contact['agenda_time'] >= 180) {
+                            <?php $agenda_time = 0; ?>
+                            <div class="card">
+                                <!-- -->
+                                <div class="card-body">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 50%;">
+                                                    <p class="font-weight-bold">MINISTER'S TIME: <?php if ($contact['agenda_time'] >= 180) {
                                                                                                             echo "30 Minutes";
                                                                                                         } ?></p>
-                                                        <p class="font-weight-bold text-danger">MODE:
-                                                            <?= strtoupper($contact['agenda_type']); ?></p>
-                                                    </td>
-                                                    <td>
-                                                        <p class="font-weight-bold">DATE: <?= $contact['agenda_date'] ?></p>
-                                                        <p class="font-weight-bold">
-                                                            TIME ALLOTMENT (Hours: Minutes) :
-                                                            <?php $agenda_time = $contact['agenda_time']; ?>
-                                                            <?= sprintf('%02d:%02d', ($contact['agenda_time'] / 60 % 60), $contact['agenda_time'] % 60); ?>
-                                                            HRS</p>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2" class="font-weight-bold">SUBJECT:
-                                                        <?= $contact['agenda_title'] ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2" class="font-weight-bold">IN THE CHAIR:
-                                                        <?= $contact['in_the_chair'] ?></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <div class="row mt-4">
-                                            <div class="col-12">
-                                                <div class="card">
-                                                    <div class="card-header bg-info">
-                                                        <?php
+                                                    <p class="font-weight-bold text-danger">MODE:
+                                                        <?= strtoupper($contact['agenda_type']); ?></p>
+                                                </td>
+                                                <td>
+                                                    <p class="font-weight-bold">DATE: <?= $contact['agenda_date'] ?></p>
+                                                    <p class="font-weight-bold">
+                                                        TIME ALLOTMENT (Hours: Minutes) :
+                                                        <?php $agenda_time = $contact['agenda_time']; ?>
+                                                        <?= sprintf('%02d:%02d', ($contact['agenda_time'] / 60 % 60), $contact['agenda_time'] % 60); ?>
+                                                        HRS</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" class="font-weight-bold">SUBJECT:
+                                                    <?= $contact['agenda_title'] ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" class="font-weight-bold">IN THE CHAIR:
+                                                    <?= $contact['in_the_chair'] ?></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="row mt-4">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="card-header bg-info">
+                                                    <?php
                                                         $s = 0;
 
                                                         $total_strength = 0;
@@ -519,56 +519,56 @@ error_reporting(E_ALL);
                                                         // Get the total number of contacts, this is so we can determine whether there should be a next and previous button
                                                         $num_groups = $pdo->query('SELECT COUNT(*) FROM party_groups')->fetchColumn();
                                                         ?>
-                                                        <h3 class="card-title font-weight-bold">PARTY WISE TIME DISTRIBUTION
-                                                        </h3>
-                                                        <h3 class="card-title font-weight-bold"
-                                                            style="float: right!important;">Total
-                                                            Strength:
-                                                            <?php echo $total_strength = array_sum(array_column($groups, 'strength')); ?>
-                                                        </h3>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            <?php foreach ($groups as $group): $s + 1; ?>
-                                                                <div class="col-2">
-                                                                    <table class="table table-bordered">
-                                                                        <tbody>
-                                                                            <tr>
-                                                                                <td colspan="2"
-                                                                                    class="font-weight-bold bg-primary">
-                                                                                    <?= $group['group_name']; ?>
-                                                                                    <?= $group['strength']; ?>
-                                                                                    <? $agenda_time; ?>
-                                                                                    <? $total_strength; ?>
-                                                                                    <?php $party_time = round($group['strength'] * $agenda_time / $total_strength); ?>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <!-- <td class="font-weight-bold">
+                                                    <h3 class="card-title font-weight-bold">PARTY WISE TIME DISTRIBUTION
+                                                    </h3>
+                                                    <h3 class="card-title font-weight-bold"
+                                                        style="float: right!important;">Total
+                                                        Strength:
+                                                        <?php echo $total_strength = array_sum(array_column($groups, 'strength')); ?>
+                                                    </h3>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <?php foreach ($groups as $group): $s + 1; ?>
+                                                        <div class="col-2">
+                                                            <table class="table table-bordered">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td colspan="2"
+                                                                            class="font-weight-bold bg-primary">
+                                                                            <?= $group['group_name']; ?>
+                                                                            <?= $group['strength']; ?>
+                                                                            <? $agenda_time; ?>
+                                                                            <? $total_strength; ?>
+                                                                            <?php $party_time = round($group['strength'] * $agenda_time / $total_strength); ?>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <!-- <td class="font-weight-bold">
 
                                                                             </td> -->
-                                                                                <td class="font-weight-bold">
-                                                                                    <?php
+                                                                        <td class="font-weight-bold">
+                                                                            <?php
                                                                                     $minutes = $party_time;
 
                                                                                     $hours = floor($minutes / 60);
                                                                                     $min = $minutes - ($hours * 60);
                                                                                     ?>
 
-                                                                                    <?= sprintf('%02d:%02d', $hours, $min); ?>
-                                                                                </td>
-                                                                            </tr>
+                                                                            <?= sprintf('%02d:%02d', $hours, $min); ?>
+                                                                        </td>
+                                                                    </tr>
 
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            <?php endforeach; ?>
-
+                                                                </tbody>
+                                                            </table>
                                                         </div>
-                                                        </table>
-                                                        <!-- -->
+                                                        <?php endforeach; ?>
 
                                                     </div>
+                                                    </table>
+                                                    <!-- -->
+
+                                                </div>
                                                 <?php endif; ?>
                                                 <!-- TO DO List -->
                                                 <div class="card">
@@ -593,8 +593,8 @@ error_reporting(E_ALL);
                                                     <div class="card-body">
                                                         <?php $pdo = pdo_connect_mysql(); ?>
                                                         <?php if ($contact['agenda_type'] == 'zero-hours'): ?>
-                                                            <ul class="todo-list" data-widget="todo-list">
-                                                                <?php
+                                                        <ul class="todo-list" data-widget="todo-list">
+                                                            <?php
                                                                 $stmt = $pdo->query("SELECT * FROM agenda WHERE agenda_status = 'open' ORDER BY agenda_id DESC LIMIT 1");
 
                                                                 // Fetch the result
@@ -608,129 +608,130 @@ error_reporting(E_ALL);
                                                                         $speaker = $stmt->fetch(PDO::FETCH_ASSOC);
                                                                         if ($speaker): ?>
 
-                                                                            <li class="border mb-3">
-                                                                                <!-- drag handle -->
-                                                                                <span class="handle">
-                                                                                    <i class="fas fa-ellipsis-v"></i>
-                                                                                    <i class="fas fa-ellipsis-v"></i>
-                                                                                    <i class="fas fa-ellipsis-v"></i>
-                                                                                    <i class="fas fa-ellipsis-v"></i>
-                                                                                </span>
-                                                                                <!-- checkbox -->
-                                                                                <span class="text">
-                                                                                    <div class="icheck-primary d-inline ml-2">
-                                                                                        <input type="checkbox" value=""
-                                                                                            name="todo<?= $speaker['div_no'] ?>"
-                                                                                            id="todoCheck<?= $speaker['div_no'] ?>">
-                                                                                        <label
-                                                                                            for="todoCheck<?= $speaker['div_no'] ?>"></label>
-                                                                                    </div>
-                                                                                </span>
-                                                                                <!-- todo text -->
-                                                                                <span
-                                                                                    class="text"><?= sprintf("%03d", $speaker['div_no']) ?></span>
-                                                                                <span class="text">
-                                                                                    <input type="text"
-                                                                                        name="nt_<?= $speaker['div_no'] ?>"
-                                                                                        id="nt_<?= $speaker['div_no'] ?>" class="d-none"
-                                                                                        value="" style="width: 50%;"
-                                                                                        placeholder="Nums only">
-                                                                                </span>
-                                                                                <small class="badge">
-                                                                                    <button class="border-light h3" data-toggle="modal"
-                                                                                        data-target="#timeModify">
-                                                                                        <i class="fas fa-clock"></i>
-                                                                                    </button>
-                                                                                </small>
-                                                                                <script>
-                                                                                    function increaseTime() {
-                                                                                        /*alert(document.getElementById(
-                                                                                            "extraMinutes").value);*/
-                                                                                        socket.send(JSON.stringify({
-                                                                                            type: "incrementDown",
-                                                                                            value: parseInt(document
-                                                                                                .getElementById(
-                                                                                                    "extraMinutes").value *
-                                                                                                60)
-                                                                                        }));
-                                                                                        document.getElementById(
-                                                                                            "extraMinutes").value = '';
-                                                                                    }
-                                                                                </script>
-                                                                                <small class="badge badge-danger"><i
-                                                                                        class="far fa-clock"></i> 3 mins</small>
-                                                                                <!-- Emphasis label -->
-                                                                                <small class="badge">
-                                                                                    <button class="border-light h3"
-                                                                                        onclick="startSpeaking_<?= $speaker['div_no'] ?>();">
-                                                                                        <i class="fas fa-play"></i>
-                                                                                    </button>
+                                                            <li class="border mb-3">
+                                                                <!-- drag handle -->
+                                                                <span class="handle">
+                                                                    <i class="fas fa-ellipsis-v"></i>
+                                                                    <i class="fas fa-ellipsis-v"></i>
+                                                                    <i class="fas fa-ellipsis-v"></i>
+                                                                    <i class="fas fa-ellipsis-v"></i>
+                                                                </span>
+                                                                <!-- checkbox -->
+                                                                <span class="text">
+                                                                    <div class="icheck-primary d-inline ml-2">
+                                                                        <input type="checkbox" value=""
+                                                                            name="todo<?= $speaker['div_no'] ?>"
+                                                                            id="todoCheck<?= $speaker['div_no'] ?>">
+                                                                        <label
+                                                                            for="todoCheck<?= $speaker['div_no'] ?>"></label>
+                                                                    </div>
+                                                                </span>
+                                                                <!-- todo text -->
+                                                                <span
+                                                                    class="text"><?= sprintf("%03d", $speaker['div_no']) ?></span>
+                                                                <span class="text">
+                                                                    <input type="text"
+                                                                        name="nt_<?= $speaker['div_no'] ?>"
+                                                                        id="nt_<?= $speaker['div_no'] ?>" class="d-none"
+                                                                        value="" style="width: 50%;"
+                                                                        placeholder="Nums only">
+                                                                </span>
+                                                                <small class="badge">
+                                                                    <button class="border-light h3" data-toggle="modal"
+                                                                        data-target="#timeModify">
+                                                                        <i class="fas fa-clock"></i>
+                                                                    </button>
+                                                                </small>
+                                                                <script>
+                                                                function increaseTime() {
+                                                                    /*alert(document.getElementById(
+                                                                        "extraMinutes").value);*/
+                                                                    socket.send(JSON.stringify({
+                                                                        type: "incrementDown",
+                                                                        value: parseInt(document
+                                                                            .getElementById(
+                                                                                "extraMinutes").value *
+                                                                            60)
+                                                                    }));
+                                                                    document.getElementById(
+                                                                        "extraMinutes").value = '';
+                                                                }
+                                                                </script>
+                                                                <small class="badge badge-danger"><i
+                                                                        class="far fa-clock"></i> 3 mins</small>
+                                                                <!-- Emphasis label -->
+                                                                <small class="badge">
+                                                                    <button class="border-light h3"
+                                                                        onclick="startSpeaking_<?= $speaker['div_no'] ?>();">
+                                                                        <i class="fas fa-play"></i>
+                                                                    </button>
 
-                                                                                    <script>
-                                                                                        function startSpeaking_<?= $speaker['div_no'] ?>() {
-                                                                                            alert("Start Speaking");
-                                                                                            const atime_<?= $speaker['div_no'] ?> = document
-                                                                                                .getElementById(
-                                                                                                    "nt_<?= $speaker['div_no'] ?>").value;
-                                                                                            socket.send(JSON.stringify({
-                                                                                                action: "start",
-                                                                                                spk: ["<?= $speaker['name_en'] ?>",
-                                                                                                    "<?= $speaker['name_hi'] ?>",
-                                                                                                    "<?= $speaker['full_party_name'] ?>",
-                                                                                                    "<?= $speaker['state_name'] ?>",
-                                                                                                    "<?= sprintf("%03d", $speaker['div_no']) ?>",
-                                                                                                    "<?= $speaker['id'] ?>"
-                                                                                                ],
-                                                                                                time: ["<?= $speaker['party'] ?>",
-                                                                                                    3,
-                                                                                                    atime_<?= $speaker['div_no'] ?>
-                                                                                                ]
-                                                                                            }));
-                                                                                            // socket.send(JSON.stringify({
-                                                                                            //     action: "time",
-                                                                                            //     spk: ["AMIT SHAH", "BJP",
-                                                                                            //         "UTTAR PRADESH", "003"
-                                                                                            //     ],
-                                                                                            //     time: ["60:00", "10:00"]
-                                                                                            // }));
+                                                                    <script>
+                                                                    function startSpeaking_<?= $speaker['div_no'] ?>() {
+                                                                        //alert("Start Speaking");
+                                                                        const atime_<?= $speaker['div_no'] ?> = document
+                                                                            .getElementById(
+                                                                                "nt_<?= $speaker['div_no'] ?>").value;
+                                                                        socket.send(JSON.stringify({
+                                                                            action: "start",
+                                                                            spk: ["<?= $speaker['name_en'] ?>",
+                                                                                "<?= $speaker['name_hi'] ?>",
+                                                                                "<?= $speaker['full_party_name'] ?>",
+                                                                                "<?= $speaker['state_name'] ?>",
+                                                                                "<?= sprintf("%03d", $speaker['div_no']) ?>",
+                                                                                "<?= $speaker['id'] ?>",
+                                                                                "<?= $speaker['pics'] ?>"
+                                                                            ],
+                                                                            time: ["<?= $speaker['party'] ?>",
+                                                                                3,
+                                                                                atime_<?= $speaker['div_no'] ?>
+                                                                            ]
+                                                                        }));
+                                                                        // socket.send(JSON.stringify({
+                                                                        //     action: "time",
+                                                                        //     spk: ["AMIT SHAH", "BJP",
+                                                                        //         "UTTAR PRADESH", "003"
+                                                                        //     ],
+                                                                        //     time: ["60:00", "10:00"]
+                                                                        // }));
 
-                                                                                        }
-                                                                                    </script>
-                                                                                </small>
-                                                                                <small class="badge">
-                                                                                    <button class="border-light h3"
-                                                                                        onclick="pauseSpeaking();">
-                                                                                        <i class="fas fa-pause"></i>
-                                                                                    </button>
-                                                                                </small>
-                                                                                <small class="badge">
-                                                                                    <button class="border-light h3"
-                                                                                        onclick="stopSpeaking();">
-                                                                                        <i class="fas fa-stop"></i>
-                                                                                    </button>
-                                                                                </small>
+                                                                    }
+                                                                    </script>
+                                                                </small>
+                                                                <small class="badge">
+                                                                    <button class="border-light h3"
+                                                                        onclick="pauseSpeaking();">
+                                                                        <i class="fas fa-pause"></i>
+                                                                    </button>
+                                                                </small>
+                                                                <small class="badge">
+                                                                    <button class="border-light h3"
+                                                                        onclick="stopSpeaking();">
+                                                                        <i class="fas fa-stop"></i>
+                                                                    </button>
+                                                                </small>
 
-                                                                                <span class="text"><?= $speaker['name_en'] ?></span>
-                                                                                <script>
-                                                                                    function extraTime() {
-                                                                                        alert("Extra Time");
-                                                                                    }
-                                                                                </script>
-                                                                                <!-- General tools such as edit or delete-->
-                                                                                <div class="tools">
-                                                                                    <!-- <i class="fas fa-edit"></i> <i class="fas fa-trash-o"></i> -->
-                                                                                </div>
-                                                                            </li>
-                                                                <?php endif;
+                                                                <span class="text"><?= $speaker['name_en'] ?></span>
+                                                                <script>
+                                                                function extraTime() {
+                                                                    //alert("Extra Time");
+                                                                }
+                                                                </script>
+                                                                <!-- General tools such as edit or delete-->
+                                                                <div class="tools">
+                                                                    <!-- <i class="fas fa-edit"></i> <i class="fas fa-trash-o"></i> -->
+                                                                </div>
+                                                            </li>
+                                                            <?php endif;
                                                                     }
                                                                 }
                                                                 ?>
 
-                                                            </ul>
+                                                        </ul>
                                                         <?php endif; ?>
                                                         <?php if ($contact['agenda_type'] == 'speaking'): ?>
-                                                            <ul class="todo-list" data-widget="todo-list">
-                                                                <?php
+                                                        <ul class="todo-list" data-widget="todo-list">
+                                                            <?php
                                                                 $stmt = $pdo->query("SELECT * FROM agenda WHERE agenda_status = 'open' ORDER BY agenda_id DESC LIMIT 1");
 
                                                                 // Fetch the result
@@ -744,98 +745,99 @@ error_reporting(E_ALL);
                                                                         $speaker = $stmt->fetch(PDO::FETCH_ASSOC);
                                                                         if ($speaker): ?>
 
-                                                                            <li class="border mb-3">
-                                                                                <!-- drag handle -->
-                                                                                <span class="handle">
-                                                                                    <i class="fas fa-ellipsis-v"></i>
-                                                                                    <i class="fas fa-ellipsis-v"></i>
-                                                                                    <i class="fas fa-ellipsis-v"></i>
-                                                                                    <i class="fas fa-ellipsis-v"></i>
-                                                                                </span>
-                                                                                <!-- checkbox -->
-                                                                                <span class="text">
-                                                                                    <div class="icheck-primary d-inline ml-2">
-                                                                                        <input type="checkbox" value=""
-                                                                                            name="todo<?= $speaker['div_no'] ?>"
-                                                                                            id="todoCheck<?= $speaker['div_no'] ?>">
-                                                                                        <label
-                                                                                            for="todoCheck<?= $speaker['div_no'] ?>"></label>
-                                                                                    </div>
-                                                                                </span>
-                                                                                <!-- todo text -->
-                                                                                <span
-                                                                                    class="text"><?= sprintf("%03d", $speaker['div_no']) ?></span>
-                                                                                <span class="text">
-                                                                                    <input type="text"
-                                                                                        name="nt_<?= $speaker['div_no'] ?>"
-                                                                                        id="nt_<?= $speaker['div_no'] ?>" class="d-none"
-                                                                                        style="width: 50%;" placeholder="--:--">
-                                                                                </span>
-                                                                                <!-- <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small> -->
-                                                                                <!-- Emphasis label -->
-                                                                                <small class="badge">
-                                                                                    <button class="border-light h3"
-                                                                                        onclick="startSpeaking_<?= $speaker['div_no'] ?>();">
-                                                                                        <i class="fas fa-play"></i>
-                                                                                    </button>
+                                                            <li class="border mb-3">
+                                                                <!-- drag handle -->
+                                                                <span class="handle">
+                                                                    <i class="fas fa-ellipsis-v"></i>
+                                                                    <i class="fas fa-ellipsis-v"></i>
+                                                                    <i class="fas fa-ellipsis-v"></i>
+                                                                    <i class="fas fa-ellipsis-v"></i>
+                                                                </span>
+                                                                <!-- checkbox -->
+                                                                <span class="text">
+                                                                    <div class="icheck-primary d-inline ml-2">
+                                                                        <input type="checkbox" value=""
+                                                                            name="todo<?= $speaker['div_no'] ?>"
+                                                                            id="todoCheck<?= $speaker['div_no'] ?>">
+                                                                        <label
+                                                                            for="todoCheck<?= $speaker['div_no'] ?>"></label>
+                                                                    </div>
+                                                                </span>
+                                                                <!-- todo text -->
+                                                                <span
+                                                                    class="text"><?= sprintf("%03d", $speaker['div_no']) ?></span>
+                                                                <span class="text">
+                                                                    <input type="text"
+                                                                        name="nt_<?= $speaker['div_no'] ?>"
+                                                                        id="nt_<?= $speaker['div_no'] ?>" class="d-none"
+                                                                        style="width: 50%;" placeholder="--:--">
+                                                                </span>
+                                                                <!-- <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small> -->
+                                                                <!-- Emphasis label -->
+                                                                <small class="badge">
+                                                                    <button class="border-light h3"
+                                                                        onclick="startSpeaking_<?= $speaker['div_no'] ?>();">
+                                                                        <i class="fas fa-play"></i>
+                                                                    </button>
 
-                                                                                    <script>
-                                                                                        function startSpeaking_<?= $speaker['div_no'] ?>() {
-                                                                                            const atime_<?= $speaker['div_no'] ?> = document
-                                                                                                .getElementById(
-                                                                                                    "nt_<?= $speaker['div_no'] ?>").value;
-                                                                                            socket.send(JSON.stringify({
-                                                                                                action: "start",
-                                                                                                spk: ["<?= $speaker['name_en'] ?>",
-                                                                                                    "<?= $speaker['name_hi'] ?>",
-                                                                                                    "<?= $speaker['full_party_name'] ?>",
-                                                                                                    "<?= $speaker['state_name'] ?>",
-                                                                                                    "<?= sprintf("%03d", $speaker['div_no']) ?>",
-                                                                                                    "<?= $speaker['id'] ?>"
-                                                                                                ],
-                                                                                                time: ["<?= $speaker['party'] ?>",
-                                                                                                    "00:60:00",
-                                                                                                    atime_<?= $speaker['div_no'] ?>
-                                                                                                ]
-                                                                                            }));
-                                                                                            //socket.send(JSON.stringify({ action: "time", spk:["AMIT SHAH", "BJP", "UTTAR PRADESH","003"], time: ["60:00", "10:00"] }));
+                                                                    <script>
+                                                                    function startSpeaking_<?= $speaker['div_no'] ?>() {
+                                                                        const atime_<?= $speaker['div_no'] ?> = document
+                                                                            .getElementById(
+                                                                                "nt_<?= $speaker['div_no'] ?>").value;
+                                                                        socket.send(JSON.stringify({
+                                                                            action: "start",
+                                                                            spk: ["<?= $speaker['name_en'] ?>",
+                                                                                "<?= $speaker['name_hi'] ?>",
+                                                                                "<?= $speaker['full_party_name'] ?>",
+                                                                                "<?= $speaker['state_name'] ?>",
+                                                                                "<?= sprintf("%03d", $speaker['div_no']) ?>",
+                                                                                "<?= $speaker['id'] ?>",
+                                                                                "<?= $speaker['pics'] ?>"
+                                                                            ],
+                                                                            time: ["<?= $speaker['party'] ?>",
+                                                                                "00:60:00",
+                                                                                atime_<?= $speaker['div_no'] ?>
+                                                                            ]
+                                                                        }));
+                                                                        //socket.send(JSON.stringify({ action: "time", spk:["AMIT SHAH", "BJP", "UTTAR PRADESH","003"], time: ["60:00", "10:00"] }));
 
-                                                                                        }
-                                                                                    </script>
-                                                                                </small>
-                                                                                <small class="badge">
-                                                                                    <button class="border-light h3"
-                                                                                        onclick="pauseSpeaking();">
-                                                                                        <i class="fas fa-pause"></i>
-                                                                                    </button>
-                                                                                </small>
-                                                                                <small class="badge">
-                                                                                    <button class="border-light h3"
-                                                                                        onclick="stopSpeaking();">
-                                                                                        <i class="fas fa-stop"></i>
-                                                                                    </button>
-                                                                                </small>
-                                                                                <span class="text"><?= $speaker['name_en'] ?></span>
-                                                                                <script>
-                                                                                    function extraTime() {
-                                                                                        alert("Extra Time");
-                                                                                    }
-                                                                                </script>
-                                                                                <!-- General tools such as edit or delete-->
-                                                                                <div class="tools">
-                                                                                    <!-- <i class="fas fa-edit"></i> <i class="fas fa-trash-o"></i> -->
-                                                                                </div>
-                                                                            </li>
-                                                                <?php endif;
+                                                                    }
+                                                                    </script>
+                                                                </small>
+                                                                <small class="badge">
+                                                                    <button class="border-light h3"
+                                                                        onclick="pauseSpeaking();">
+                                                                        <i class="fas fa-pause"></i>
+                                                                    </button>
+                                                                </small>
+                                                                <small class="badge">
+                                                                    <button class="border-light h3"
+                                                                        onclick="stopSpeaking();">
+                                                                        <i class="fas fa-stop"></i>
+                                                                    </button>
+                                                                </small>
+                                                                <span class="text"><?= $speaker['name_en'] ?></span>
+                                                                <script>
+                                                                function extraTime() {
+                                                                    //alert("Extra Time");
+                                                                }
+                                                                </script>
+                                                                <!-- General tools such as edit or delete-->
+                                                                <div class="tools">
+                                                                    <!-- <i class="fas fa-edit"></i> <i class="fas fa-trash-o"></i> -->
+                                                                </div>
+                                                            </li>
+                                                            <?php endif;
                                                                     }
                                                                 }
                                                                 ?>
 
-                                                            </ul>
+                                                        </ul>
                                                         <?php endif; ?>
                                                         <?php if ($contact['agenda_type'] == 'discussion'): ?>
-                                                            <ul class="todo-list" data-widget="todo-list">
-                                                                <?php
+                                                        <ul class="todo-list" data-widget="todo-list">
+                                                            <?php
                                                                 $stmt = $pdo->query("SELECT * FROM agenda WHERE agenda_status = 'open' ORDER BY agenda_id DESC LIMIT 1");
 
                                                                 // Fetch the result
@@ -849,97 +851,99 @@ error_reporting(E_ALL);
                                                                         $speaker = $stmt->fetch(PDO::FETCH_ASSOC);
                                                                         if ($speaker): ?>
 
-                                                                            <li class="border mb-3">
-                                                                                <!-- drag handle -->
-                                                                                <span class="handle">
-                                                                                    <i class="fas fa-ellipsis-v"></i>
-                                                                                    <i class="fas fa-ellipsis-v"></i>
-                                                                                    <i class="fas fa-ellipsis-v"></i>
-                                                                                    <i class="fas fa-ellipsis-v"></i>
-                                                                                </span>
-                                                                                <!-- checkbox -->
-                                                                                <span class="text">
-                                                                                    <div class="icheck-primary d-inline ml-2">
-                                                                                        <input type="checkbox" value=""
-                                                                                            class="form-control form-control-sm"
-                                                                                            name="todo<?= $speaker['div_no'] ?>"
-                                                                                            id="todoCheck<?= $speaker['div_no'] ?>">
-                                                                                        <label
-                                                                                            for="todoCheck<?= $speaker['div_no'] ?>"></label>
-                                                                                    </div>
-                                                                                </span>
-                                                                                <!-- todo text -->
-                                                                                <span
-                                                                                    class="text text-primary"><?= sprintf("%03d", $speaker['div_no']) ?></span>
-                                                                                <span class="text">
-                                                                                    <input type="text"
-                                                                                        name="nt_<?= $speaker['div_no'] ?>"
-                                                                                        id="nt_<?= $speaker['div_no'] ?>"
-                                                                                        class="form-control form-control-sm"
-                                                                                        style="width: 50%;" placeholder="--:--">
-                                                                                </span>
-                                                                                <span
-                                                                                    class="text text-danger"><?= $speaker['group_name'] ?></span>
-                                                                                <!-- <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small> -->
-                                                                                <!-- Emphasis label -->
-                                                                                <small class="badge">
-                                                                                    <button class="border-light h3"
-                                                                                        onclick="startSpeaking_<?= $speaker['div_no'] ?>();">
-                                                                                        <i class="fas fa-play"></i>
-                                                                                    </button>
+                                                            <li class="border mb-3">
+                                                                <!-- drag handle -->
+                                                                <span class="handle">
+                                                                    <i class="fas fa-ellipsis-v"></i>
+                                                                    <i class="fas fa-ellipsis-v"></i>
+                                                                    <i class="fas fa-ellipsis-v"></i>
+                                                                    <i class="fas fa-ellipsis-v"></i>
+                                                                </span>
+                                                                <!-- checkbox -->
+                                                                <span class="text">
+                                                                    <div class="icheck-primary d-inline ml-2">
+                                                                        <input type="checkbox" value=""
+                                                                            class="form-control form-control-sm"
+                                                                            name="todo<?= $speaker['div_no'] ?>"
+                                                                            id="todoCheck<?= $speaker['div_no'] ?>">
+                                                                        <label
+                                                                            for="todoCheck<?= $speaker['div_no'] ?>"></label>
+                                                                    </div>
+                                                                </span>
+                                                                <!-- todo text -->
+                                                                <span
+                                                                    class="text text-primary"><?= sprintf("%03d", $speaker['div_no']) ?></span>
+                                                                <span class="text">
+                                                                    <input type="text"
+                                                                        name="nt_<?= $speaker['div_no'] ?>"
+                                                                        id="nt_<?= $speaker['div_no'] ?>"
+                                                                        class="form-control form-control-sm"
+                                                                        style="width: 50%;" placeholder="--:--">
+                                                                </span>
+                                                                <span
+                                                                    class="text text-danger"><?= $speaker['group_name'] ?></span>
+                                                                <!-- <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small> -->
+                                                                <!-- Emphasis label -->
+                                                                <small class="badge">
+                                                                    <button class="border-light h3"
+                                                                        onclick="startSpeaking_<?= $speaker['div_no'] ?>();">
+                                                                        <i class="fas fa-play"></i>
+                                                                    </button>
 
-                                                                                    <script>
-                                                                                        function startSpeaking_<?= $speaker['div_no'] ?>() {
-                                                                                            const atime_<?= $speaker['div_no'] ?> = document
-                                                                                                .getElementById(
-                                                                                                    "nt_<?= $speaker['div_no'] ?>").value;
-                                                                                            socket.send(JSON.stringify({
-                                                                                                action: "time",
-                                                                                                spk: ["<?= $speaker['name_en'] ?>",
-                                                                                                    "<?= $speaker['name_hi'] ?>",
-                                                                                                    "<?= $speaker['full_party_name'] ?>",
-                                                                                                    "<?= $speaker['state_name'] ?>",
-                                                                                                    "<?= sprintf("%03d", $speaker['div_no']) ?>"
-                                                                                                ],
-                                                                                                time: ["<?= $speaker['party'] ?>",
-                                                                                                    "00:60:00",
-                                                                                                    atime_<?= $speaker['div_no'] ?>
-                                                                                                ]
-                                                                                            }));
-                                                                                            //socket.send(JSON.stringify({ action: "time", spk:["AMIT SHAH", "BJP", "UTTAR PRADESH","003"], time: ["60:00", "10:00"] }));
+                                                                    <script>
+                                                                    function startSpeaking_<?= $speaker['div_no'] ?>() {
+                                                                        const atime_<?= $speaker['div_no'] ?> = document
+                                                                            .getElementById(
+                                                                                "nt_<?= $speaker['div_no'] ?>").value;
+                                                                        socket.send(JSON.stringify({
+                                                                            action: "time",
+                                                                            spk: ["<?= $speaker['name_en'] ?>",
+                                                                                "<?= $speaker['name_hi'] ?>",
+                                                                                "<?= $speaker['full_party_name'] ?>",
+                                                                                "<?= $speaker['state_name'] ?>",
+                                                                                "<?= sprintf("%03d", $speaker['div_no']) ?>",
+                                                                                "<?= $speaker['id'] ?>",
+                                                                                "<?= $speaker['pics'] ?>"
+                                                                            ],
+                                                                            time: ["<?= $speaker['party'] ?>",
+                                                                                "00:60:00",
+                                                                                atime_<?= $speaker['div_no'] ?>
+                                                                            ]
+                                                                        }));
+                                                                        //socket.send(JSON.stringify({ action: "time", spk:["AMIT SHAH", "BJP", "UTTAR PRADESH","003"], time: ["60:00", "10:00"] }));
 
-                                                                                        }
-                                                                                    </script>
-                                                                                </small>
-                                                                                <small class="badge">
-                                                                                    <button class="border-light h3"
-                                                                                        onclick="pauseSpeaking();">
-                                                                                        <i class="fas fa-pause"></i>
-                                                                                    </button>
-                                                                                </small>
-                                                                                <small class="badge">
-                                                                                    <button class="border-light h3"
-                                                                                        onclick="extraTime();">
-                                                                                        <i class="fas fa-clock"></i>
-                                                                                    </button>
-                                                                                </small>
-                                                                                <span class="text"><?= $speaker['name_en'] ?></span>
-                                                                                <script>
-                                                                                    function extraTime() {
-                                                                                        alert("Extra Time");
-                                                                                    }
-                                                                                </script>
-                                                                                <!-- General tools such as edit or delete-->
-                                                                                <div class="tools">
-                                                                                    <!-- <i class="fas fa-edit"></i> <i class="fas fa-trash-o"></i> -->
-                                                                                </div>
-                                                                            </li>
-                                                                <?php endif;
+                                                                    }
+                                                                    </script>
+                                                                </small>
+                                                                <small class="badge">
+                                                                    <button class="border-light h3"
+                                                                        onclick="pauseSpeaking();">
+                                                                        <i class="fas fa-pause"></i>
+                                                                    </button>
+                                                                </small>
+                                                                <small class="badge">
+                                                                    <button class="border-light h3"
+                                                                        onclick="extraTime();">
+                                                                        <i class="fas fa-clock"></i>
+                                                                    </button>
+                                                                </small>
+                                                                <span class="text"><?= $speaker['name_en'] ?></span>
+                                                                <script>
+                                                                function extraTime() {
+                                                                    //alert("Extra Time");
+                                                                }
+                                                                </script>
+                                                                <!-- General tools such as edit or delete-->
+                                                                <div class="tools">
+                                                                    <!-- <i class="fas fa-edit"></i> <i class="fas fa-trash-o"></i> -->
+                                                                </div>
+                                                            </li>
+                                                            <?php endif;
                                                                     }
                                                                 }
                                                                 ?>
 
-                                                            </ul>
+                                                        </ul>
                                                         <?php endif; ?>
                                                     </div>
                                                     <!-- /.card-body -->
@@ -1028,78 +1032,78 @@ error_reporting(E_ALL);
     </div>
     <!-- ./wrapper -->
     <script>
-        $(document).ready(function() {
-            var socket = new WebSocket('ws://localhost:8080');
-            var messenger = document.getElementById('messenger');
-            const input = document.getElementById('message');
-            //var Footermessage = JSON.stringify({ action: "message", data: input.value });
-            //alert( "ready!" );
-            // sending msg
-            $("#sendMessage").on("click", function() {
-                messenger.innerHTML = '<div class="direct-chat-msg"><div class="direct-chat-text">' +
-                    document.getElementById('message').value + '</div></div>';
-                socket.send(JSON.stringify({
-                    action: "message",
-                    data: input.value
-                }));
-                input.value = '';
-            });
-
-            $("#speaker").on("click", function() {
-                //alert( "ready!" );
-                socket.send(JSON.stringify({
-                    action: "time",
-                    spk: ["AMIT SHAH", "BJP", "UTTAR PRADESH", "003"],
-                    time: ["60:00", "10:00"]
-                }));
-            });
-
-            /*
-                fetch('http://localhost:3500/json.php')
-                  .then( async (response) => {
-
-                    // get json response here
-                    let data = await response.json();
-                    
-                    if(data.status === 200){
-                     // Process data here
-                     alert(data);
-                    }else{
-                     // Rest of status codes (400,500,303), can be handled here appropriately
-                    }
-
-                  })
-                  .catch((err) => {
-                      console.log(err);
-                  })
-              */
+    $(document).ready(function() {
+        var socket = new WebSocket('ws://localhost:8080');
+        var messenger = document.getElementById('messenger');
+        const input = document.getElementById('message');
+        //var Footermessage = JSON.stringify({ action: "message", data: input.value });
+        //alert( "ready!" );
+        // sending msg
+        $("#sendMessage").on("click", function() {
+            messenger.innerHTML = '<div class="direct-chat-msg"><div class="direct-chat-text">' +
+                document.getElementById('message').value + '</div></div>';
+            socket.send(JSON.stringify({
+                action: "message",
+                data: input.value
+            }));
+            input.value = '';
         });
+
+        $("#speaker").on("click", function() {
+            //alert( "ready!" );
+            socket.send(JSON.stringify({
+                action: "time",
+                spk: ["AMIT SHAH", "BJP", "UTTAR PRADESH", "003"],
+                time: ["60:00", "10:00"]
+            }));
+        });
+
+        /*
+            fetch('http://localhost:3500/json.php')
+              .then( async (response) => {
+
+                // get json response here
+                let data = await response.json();
+                
+                if(data.status === 200){
+                 // Process data here
+                 alert(data);
+                }else{
+                 // Rest of status codes (400,500,303), can be handled here appropriately
+                }
+
+              })
+              .catch((err) => {
+                  console.log(err);
+              })
+          */
+    });
     </script>
     <script>
-        var socket = new WebSocket('ws://localhost:8080');
+    var socket = new WebSocket('ws://localhost:8080');
 
-        // function startSpeaking() {
-        //     alert('Starting Speaking');
-        //     socket.send(JSON.stringify({
-        //         action: "time",
-        //         spk: ["AMIT SHAH", "BJP", "UTTAR PRADESH", "003"],
-        //         time: ["60:00", "10:00"]
-        //     }));
-        // }
+    // function startSpeaking() {
+    //     alert('Starting Speaking');
+    //     socket.send(JSON.stringify({
+    //         action: "time",
+    //         spk: ["AMIT SHAH", "BJP", "UTTAR PRADESH", "003"],
+    //         time: ["60:00", "10:00"]
+    //     }));
+    // }
 
-        function pauseSpeaking() {
-            alert('Pausing Speaking');
-            socket.send(JSON.stringify({
-                action: "pause"
-            }));
-        }
+    function pauseSpeaking() {
+        //alert('Pausing Speaking');
+        socket.send(JSON.stringify({
+            action: "pause"
+        }));
+    }
 
-        function stopSpeaking() {
-            alert('Stopping Speaking');
-            socket.send(JSON.stringify({
-                action: "stop"
-            }));
-        }
+    function stopSpeaking() {
+        //alert('Stopping Speaking');
+        socket.send(JSON.stringify({
+            action: "stop"
+        }));
+    }
     </script>
 
 
