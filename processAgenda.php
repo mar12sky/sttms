@@ -4,65 +4,66 @@ include 'connection.php';
 $pdo = pdo_connect_mysql();
 $data = '';
 if (!empty($_POST['action'])) {
-  try {
-    // Prepare the SQL statement
-    $stmt = $pdo->query("SELECT * FROM agenda WHERE agenda_status = 'open' ORDER BY agenda_id DESC LIMIT 1");
+    try {
+        // Prepare the SQL statement
+        $stmt = $pdo->query("SELECT * FROM agenda WHERE agenda_status = 'open' ORDER BY agenda_id DESC LIMIT 1");
 
-    // Fetch the result
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    if (!$result) {
-      $title = isset($_POST['title']) ? $_POST['title'] : '';
-      $subtitle = isset($_POST['subtitle']) ? $_POST['subtitle'] : '';
-      $description = isset($_POST['description']) ? $_POST['description'] : '';
-      $type = isset($_POST['type']) ? $_POST['type'] : '';
-      $time = isset($_POST['time']) ? $_POST['time'] : '';
-      $date = isset($_POST['date']) ? $_POST['date'] : '';
-      $status = 'open';
-      $inthechair = isset($_POST['inthechair']) ? $_POST['inthechair'] : '';
-      $created = isset($_POST['created']) ? $_POST['created'] : date('Y-m-d H:i:s');
-      $stmt = $pdo->prepare('INSERT INTO agenda VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
-      $status = $stmt->execute([NULL, $title, $subtitle, $description, $type, $time, $date, $status, NULL, $inthechair, $created]);
+        // Fetch the result
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$result) {
+            $title = isset($_POST['title']) ? $_POST['title'] : '';
+            $subtitle = isset($_POST['subtitle']) ? $_POST['subtitle'] : '';
+            $description = isset($_POST['description']) ? $_POST['description'] : '';
+            $type = isset($_POST['type']) ? $_POST['type'] : '';
+            $time = isset($_POST['time']) ? $_POST['time'] : '';
+            $date = isset($_POST['date']) ? $_POST['date'] : '';
+            $status = 'open';
+            $spklist = 0;
+            $inthechair = isset($_POST['inthechair']) ? $_POST['inthechair'] : '';
+            $created = isset($_POST['created']) ? $_POST['created'] : date('Y-m-d H:i:s');
+            $stmt = $pdo->prepare('INSERT INTO agenda VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+            $status = $stmt->execute([NULL, $title, $subtitle, $description, $type, $time, $date, $status, $spklist, $inthechair, $created]);
 
-      // Output message
-      $count = $stmt->rowCount();
-      if ($count == 0) {
-        //header("Location: index.php?msg=Failed! in creating session");
-        $data = [
-          "status" => "error",
-          "title" => "Faild",
-          "heading" => "Faild",
-          "class" => "bg-danger",
-          "message" => "The Agenda could not be created"
-        ];
-      } else {
-        //header("Location: index.php?msg=Session started successfully!");
-        $data = [
-          "status" => "success",
-          "title" => "Success",
-          "heading" => "Success",
-          "class" => "bg-success",
-          "message" => "The new Agenda has been started successfuly"
-        ];
-      }
-    } else {
-      //echo "Active session exists.";
-      //header("Location: index.php?msg=A session is already active!");
-      $data = [
-        "status" => "warning",
-        "title" => "Warning",
-        "heading" => "Warning",
-        "class" => "bg-warning",
-        "message" => "A Agenda is already active"
-      ];
-      // $data=[
-      //     "status" =>"error",
-      //     "message" => "A Session is already active. Please Add Session first."
-      // ];
+            // Output message
+            $count = $stmt->rowCount();
+            if ($count == 0) {
+                //header("Location: index.php?msg=Failed! in creating session");
+                $data = [
+                    "status" => "error",
+                    "title" => "Faild",
+                    "heading" => "Faild",
+                    "class" => "bg-danger",
+                    "message" => "The Agenda could not be created"
+                ];
+            } else {
+                //header("Location: index.php?msg=Session started successfully!");
+                $data = [
+                    "status" => "success",
+                    "title" => "Success",
+                    "heading" => "Success",
+                    "class" => "bg-success",
+                    "message" => "The new Agenda has been started successfuly"
+                ];
+            }
+        } else {
+            //echo "Active session exists.";
+            //header("Location: index.php?msg=A session is already active!");
+            $data = [
+                "status" => "warning",
+                "title" => "Warning",
+                "heading" => "Warning",
+                "class" => "bg-warning",
+                "message" => "A Agenda is already active"
+            ];
+            // $data=[
+            //     "status" =>"error",
+            //     "message" => "A Session is already active. Please Add Session first."
+            // ];
 
+        }
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
     }
-  } catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
-  }
 }
 //echo json_encode($dat);
 ?>

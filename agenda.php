@@ -219,43 +219,43 @@
                                     $num_contacts = $pdo->query('SELECT COUNT(*) FROM agenda')->fetchColumn();
                                     ?>
                                     <?php foreach ($contacts as $contact): ?>
-                                        <div class="col-md-6 col-sm-6 col-12">
-                                            <div class="info-box">
-                                                <span class="info-box-icon bg-info"><i class="far fa-bookmark"></i></span>
-                                                <div class="info-box-content">
-                                                    <span class="info-box-text fw-bold"><?= $contact['created_at'] ?><small
-                                                            class="float-right text-primary font-weight-bold"><?= strtoupper($contact['agenda_type']) ?></small></span>
-                                                    <span class="info-box-number"><?= $contact['agenda_title'] ?></span>
-                                                    <div class="progress">
-                                                        <div class="progress-bar bg-info" style="width: 100%"></div>
-                                                    </div>
-                                                    <span class="progress-description">
-                                                        <div class="btn-group" role="group" aria-label="Basic example">
-                                                            <a class="btn btn-success"
-                                                                href="view-agenda-<?= $contact['agenda_type'] ?>.php?agenda_id=<?= $contact['agenda_id'] ?>">View
-                                                            </a>
-                                                            <a class="btn btn-primary" target="_blank"
-                                                                href="speakers-list-log.php?agenda_id=<?= $contact['agenda_id'] ?>">Speakers
-                                                                Log</a>
-                                                            <a class="btn btn-warning" target="_blank"
-                                                                href="time-log-<?= $contact['agenda_type'] ?>.php?agenda_id=<?= $contact['agenda_id'] ?>">Time
-                                                                Log</a>
-                                                        </div>
-                                                        <small class="float-right">
-                                                            <form id="end-agenda-form" method="post"
-                                                                action="end_agenda.php">
-                                                                <input type="hidden" name="agenda_id" id="agenda_id"
-                                                                    value="<?= $contact['agenda_id'] ?>">
-                                                                <button id="end_agenda" class="btn btn-danger float-right"
-                                                                    data-session-id="<?= $contact['agenda_id'] ?>">End
-                                                                </button>
-                                                            </form>
-                                                        </small>
-                                                    </span>
-
+                                    <div class="col-md-6 col-sm-6 col-12">
+                                        <div class="info-box">
+                                            <span class="info-box-icon bg-info"><i class="far fa-bookmark"></i></span>
+                                            <div class="info-box-content">
+                                                <span class="info-box-text fw-bold"><?= $contact['created_at'] ?><small
+                                                        class="float-right text-primary font-weight-bold"><?= strtoupper($contact['agenda_type']) ?></small></span>
+                                                <span class="info-box-number"><?= $contact['agenda_title'] ?></span>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-info" style="width: 100%"></div>
                                                 </div>
+                                                <span class="progress-description">
+                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                        <a class="btn btn-success"
+                                                            href="view-agenda-<?= $contact['agenda_type'] ?>.php?agenda_id=<?= $contact['agenda_id'] ?>">View
+                                                        </a>
+                                                        <a class="btn btn-primary" target="_blank"
+                                                            href="speakers-list-log.php?agenda_id=<?= $contact['agenda_id'] ?>">Speakers
+                                                            Log</a>
+                                                        <a class="btn btn-warning" target="_blank"
+                                                            href="time-log-<?= $contact['agenda_type'] ?>.php?agenda_id=<?= $contact['agenda_id'] ?>">Time
+                                                            Log</a>
+                                                    </div>
+                                                    <small class="float-right">
+                                                        <form id="end-agenda-form" method="post"
+                                                            action="end_agenda.php">
+                                                            <input type="hidden" name="agenda_id" id="agenda_id"
+                                                                value="<?= $contact['agenda_id'] ?>">
+                                                            <button id="end_agenda" class="btn btn-danger float-right"
+                                                                data-session-id="<?= $contact['agenda_id'] ?>">End
+                                                            </button>
+                                                        </form>
+                                                    </small>
+                                                </span>
+
                                             </div>
                                         </div>
+                                    </div>
                                     <?php endforeach; ?>
                                 </div>
 
@@ -270,35 +270,35 @@
                                     $allAgendas = $stmta->fetchAll(PDO::FETCH_ASSOC);
                                     ?>
                                     <?php foreach ($allAgendas as $allAgenda): ?>
-                                        <div class="col-md-6 col-sm-6 col-12">
-                                            <div class="info-box">
-                                                <span class="info-box-icon bg-secondary"><i
-                                                        class="far fa-bookmark"></i></span>
-                                                <div class="info-box-content">
-                                                    <span
-                                                        class="info-box-text fw-bold"><?= $allAgenda['created_at'] ?><small
-                                                            class="float-right text-primary font-weight-bold"><?= strtoupper($allAgenda['agenda_type']) ?></small></span>
-                                                    <span class="info-box-number"><?= $allAgenda['agenda_title'] ?></span>
-                                                    <!-- <div class="progress">
-                                                    <div class="progress-bar bg-info" style="width: 70%"></div>
-                                                </div> -->
-                                                    <!-- <span class="progress-description"></span> -->
-                                                    <span class="progress-description">
-                                                        <div class="btn-group" role="group" aria-label="Basic example">
-                                                            <a class="btn btn-secondary"
-                                                                href="view-agenda-<?= $allAgenda['agenda_type'] ?>.php?agenda_id=<?= $allAgenda['agenda_id'] ?>">View
-                                                                Agenda</a>
-                                                            <a class="btn btn-primary" target="_blank"
-                                                                href="speakers-list-log.php?agenda_id=<?= $allAgenda['agenda_id'] ?>">Speakers
-                                                                Log</a>
-                                                            <a class="btn btn-warning" target="_blank"
-                                                                href="time-log-<?= $allAgenda['agenda_type'] ?>.php?agenda_id=<?= $allAgenda['agenda_id'] ?>">Time
-                                                                Log</a>
-                                                        </div>
-                                                    </span>
+                                    <div class="col-md-6 col-sm-6 col-12">
+                                        <div class="info-box">
+                                            <span class="info-box-icon bg-secondary"><i
+                                                    class="far fa-bookmark"></i></span>
+                                            <div class="info-box-content">
+                                                <span
+                                                    class="info-box-text fw-bold"><?= $allAgenda['created_at'] ?><small
+                                                        class="float-right text-primary font-weight-bold"><?= strtoupper($allAgenda['agenda_type']) ?></small></span>
+                                                <span class="info-box-number"><?= $allAgenda['agenda_title'] ?></span>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-secondary" style="width: 100%"></div>
                                                 </div>
+                                                <span class="progress-description"></span>
+                                                <span class="progress-description">
+                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                        <a class="btn btn-secondary"
+                                                            href="view-agenda-<?= $allAgenda['agenda_type'] ?>.php?agenda_id=<?= $allAgenda['agenda_id'] ?>">View
+                                                            Agenda</a>
+                                                        <a class="btn btn-primary" target="_blank"
+                                                            href="speakers-list-log.php?agenda_id=<?= $allAgenda['agenda_id'] ?>">Speakers
+                                                            Log</a>
+                                                        <a class="btn btn-warning" target="_blank"
+                                                            href="time-log-<?= $allAgenda['agenda_type'] ?>.php?agenda_id=<?= $allAgenda['agenda_id'] ?>">Time
+                                                            Log</a>
+                                                    </div>
+                                                </span>
                                             </div>
                                         </div>
+                                    </div>
                                     <?php endforeach; ?>
 
                                 </div>
@@ -401,90 +401,90 @@
     <script src="dist/js/demo.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function() {
-            //Initialize Select2 Elements
-            $('.select2').select2()
+    $(function() {
+        //Initialize Select2 Elements
+        $('.select2').select2()
 
-            //Initialize Select2 Elements
-            $('.select2bs4').select2({
-                theme: 'bootstrap4'
-            })
-
-            //Datemask dd/mm/yyyy
-            $('#datemask').inputmask('dd/mm/yyyy', {
-                'placeholder': 'dd/mm/yyyy'
-            })
-            //Datemask2 mm/dd/yyyy
-            $('#datemask2').inputmask('mm/dd/yyyy', {
-                'placeholder': 'mm/dd/yyyy'
-            })
-            //Money Euro
-            $('[data-mask]').inputmask()
-
-            //Date picker
-            $('#reservationdate').datetimepicker({
-                format: 'L'
-            });
-
-            //Date and time picker
-            $('#reservationdatetime').datetimepicker({
-                icons: {
-                    time: 'far fa-clock'
-                }
-            });
-
-            //Date range picker
-            $('#reservation').daterangepicker()
-            //Date range picker with time picker
-            $('#reservationtime').daterangepicker({
-                timePicker: true,
-                timePickerIncrement: 30,
-                locale: {
-                    format: 'MM/DD/YYYY hh:mm A'
-                }
-            })
-            //Date range as a button
-            $('#daterange-btn').daterangepicker({
-                    ranges: {
-                        'Today': [moment(), moment()],
-                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                        'This Month': [moment().startOf('month'), moment().endOf('month')],
-                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
-                            'month').endOf('month')]
-                    },
-                    startDate: moment().subtract(29, 'days'),
-                    endDate: moment()
-                },
-                function(start, end) {
-                    $('#reportrange span').php(start.format('MMMM D, YYYY') + ' - ' + end.format(
-                        'MMMM D, YYYY'))
-                }
-            )
-
-            //Timepicker
-            $('#timepicker').datetimepicker({
-                format: 'LT'
-            })
-
-            //Bootstrap Duallistbox
-            $('.duallistbox').bootstrapDualListbox()
-
-            //Colorpicker
-            $('.my-colorpicker1').colorpicker()
-            //color picker with addon
-            $('.my-colorpicker2').colorpicker()
-
-            $('.my-colorpicker2').on('colorpickerChange', function(event) {
-                $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
-            })
-
-            $("input[data-bootstrap-switch]").each(function() {
-                $(this).bootstrapSwitch('state', $(this).prop('checked'));
-            })
-
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
         })
+
+        //Datemask dd/mm/yyyy
+        $('#datemask').inputmask('dd/mm/yyyy', {
+            'placeholder': 'dd/mm/yyyy'
+        })
+        //Datemask2 mm/dd/yyyy
+        $('#datemask2').inputmask('mm/dd/yyyy', {
+            'placeholder': 'mm/dd/yyyy'
+        })
+        //Money Euro
+        $('[data-mask]').inputmask()
+
+        //Date picker
+        $('#reservationdate').datetimepicker({
+            format: 'L'
+        });
+
+        //Date and time picker
+        $('#reservationdatetime').datetimepicker({
+            icons: {
+                time: 'far fa-clock'
+            }
+        });
+
+        //Date range picker
+        $('#reservation').daterangepicker()
+        //Date range picker with time picker
+        $('#reservationtime').daterangepicker({
+            timePicker: true,
+            timePickerIncrement: 30,
+            locale: {
+                format: 'MM/DD/YYYY hh:mm A'
+            }
+        })
+        //Date range as a button
+        $('#daterange-btn').daterangepicker({
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
+                        'month').endOf('month')]
+                },
+                startDate: moment().subtract(29, 'days'),
+                endDate: moment()
+            },
+            function(start, end) {
+                $('#reportrange span').php(start.format('MMMM D, YYYY') + ' - ' + end.format(
+                    'MMMM D, YYYY'))
+            }
+        )
+
+        //Timepicker
+        $('#timepicker').datetimepicker({
+            format: 'LT'
+        })
+
+        //Bootstrap Duallistbox
+        $('.duallistbox').bootstrapDualListbox()
+
+        //Colorpicker
+        $('.my-colorpicker1').colorpicker()
+        //color picker with addon
+        $('.my-colorpicker2').colorpicker()
+
+        $('.my-colorpicker2').on('colorpickerChange', function(event) {
+            $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
+        })
+
+        $("input[data-bootstrap-switch]").each(function() {
+            $(this).bootstrapSwitch('state', $(this).prop('checked'));
+        })
+
+    })
     </script>
 </body>
 
