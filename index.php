@@ -580,6 +580,22 @@ error_reporting(E_ALL);
 
                                                         <div class="card-tools">
                                                             <h3 class="card-title">
+                                                                <? if ($contact['agenda_type'] == 'discussion'): ?>
+                                                                Reset Time:
+                                                                <button class="btn btn-danger"
+                                                                    onclick="terminateTime();"><i
+                                                                        class="fas fa-hourglass-start"></i></button>
+                                                                <script>
+                                                                function terminateTime() {
+                                                                    //alert("Terminate");
+                                                                    socket.send(JSON.stringify({
+                                                                        type: "action",
+                                                                        value: "terminate"
+                                                                    }));
+
+                                                                }
+                                                                </script>
+                                                                <? endif; ?>
                                                                 <i class="ion ion-clipboard mr-1"></i>
                                                                 MODE: <?= strtoupper($contact['agenda_type']) ?>
                                                             </h3>
@@ -629,13 +645,7 @@ error_reporting(E_ALL);
                                                                 <!-- todo text -->
                                                                 <span
                                                                     class="text"><?= sprintf("%03d", $speaker['div_no']) ?></span>
-                                                                <span class="text">
-                                                                    <input type="text"
-                                                                        name="nt_<?= $speaker['div_no'] ?>"
-                                                                        id="nt_<?= $speaker['div_no'] ?>" class="d-none"
-                                                                        value="" style="width: 50%;"
-                                                                        placeholder="Nums only">
-                                                                </span>
+
                                                                 <small class="badge">
                                                                     <button class="border-light h3" data-toggle="modal"
                                                                         data-target="#timeModify">
@@ -657,8 +667,15 @@ error_reporting(E_ALL);
                                                                         "extraMinutes").value = '';
                                                                 }
                                                                 </script>
-                                                                <small class="badge badge-danger"><i
-                                                                        class="far fa-clock"></i> 3 mins</small>
+                                                                <small class="badge badge-warning"
+                                                                    style="vertical-align:super;"><i
+                                                                        class="far fa-clock"></i> <input type="text"
+                                                                        name="timeInput_<?= $speaker['div_no'] ?>"
+                                                                        id="timeInput_<?= $speaker['div_no'] ?>"
+                                                                        style="width: 50px; height:25px; text-align:center;"
+                                                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                                                                        value="3">
+                                                                    mins</small>
                                                                 <!-- Emphasis label -->
                                                                 <small class="badge">
                                                                     <button class="border-light h3"
@@ -669,24 +686,34 @@ error_reporting(E_ALL);
                                                                     <script>
                                                                     function startSpeaking_<?= $speaker['div_no'] ?>() {
                                                                         //alert("Start Speaking");
-                                                                        const atime_<?= $speaker['div_no'] ?> = document
-                                                                            .getElementById(
-                                                                                "nt_<?= $speaker['div_no'] ?>").value;
-                                                                        socket.send(JSON.stringify({
-                                                                            action: "start",
-                                                                            spk: ["<?= $speaker['name_en'] ?>",
-                                                                                "<?= $speaker['name_hi'] ?>",
-                                                                                "<?= $speaker['full_party_name'] ?>",
-                                                                                "<?= $speaker['state_name'] ?>",
-                                                                                "<?= sprintf("%03d", $speaker['div_no']) ?>",
-                                                                                "<?= $speaker['id'] ?>",
-                                                                                "<?= $speaker['pics'] ?>"
-                                                                            ],
-                                                                            time: ["<?= $speaker['party'] ?>",
-                                                                                3,
-                                                                                atime_<?= $speaker['div_no'] ?>
-                                                                            ]
-                                                                        }));
+                                                                        var timeValue_<?= $speaker['div_no'] ?> =
+                                                                            document.getElementById(
+                                                                                "timeInput_<?= $speaker['div_no'] ?>")
+                                                                            .value;
+                                                                        if (timeValue_<?= $speaker['div_no'] ?> ===
+                                                                            undefined ||
+                                                                            timeValue_<?= $speaker['div_no'] ?> ===
+                                                                            null ||
+                                                                            timeValue_<?= $speaker['div_no'] ?> === ""
+                                                                        ) {
+                                                                            alert("Please enter a valid Speaker time");
+                                                                        } else {
+                                                                            socket.send(JSON.stringify({
+                                                                                action: "start",
+                                                                                spk: ["<?= $speaker['name_en'] ?>",
+                                                                                    "<?= $speaker['name_hi'] ?>",
+                                                                                    "<?= $speaker['full_party_name'] ?>",
+                                                                                    "<?= $speaker['state_name'] ?>",
+                                                                                    "<?= sprintf("%03d", $speaker['div_no']) ?>",
+                                                                                    "<?= $speaker['id'] ?>",
+                                                                                    "<?= $speaker['pics'] ?>"
+                                                                                ],
+                                                                                time: ["<?= $speaker['party'] ?>",
+                                                                                    0,
+                                                                                    timeValue_<?= $speaker['div_no'] ?>
+                                                                                ]
+                                                                            }));
+                                                                        }
 
                                                                     }
                                                                     </script>
@@ -839,7 +866,7 @@ error_reporting(E_ALL);
                                                                 if ($result) {
                                                                     $speaker_list = explode(',', $result['speaker_list']);
                                                                     foreach ($speaker_list as $speaker) {
-                                                                        $stmt = $pdo->prepare('SELECT * FROM delegates WHERE id = ?');
+                                                                        $stmt = $pdo->prepare('SELECT * FROM delegates INNER JOIN party_groups ON party_groups.group_name = delegates.group_name WHERE id = ?');
                                                                         $stmt->execute([$speaker]);
                                                                         $speaker = $stmt->fetch(PDO::FETCH_ASSOC);
                                                                         if ($speaker): ?>
@@ -865,13 +892,8 @@ error_reporting(E_ALL);
                                                                 <!-- todo text -->
                                                                 <span
                                                                     class="text"><?= sprintf("%03d", $speaker['div_no']) ?></span>
-                                                                <span class="text">
-                                                                    <input type="text"
-                                                                        name="nt_<?= $speaker['div_no'] ?>"
-                                                                        id="nt_<?= $speaker['div_no'] ?>" class="d-none"
-                                                                        value="" style="width: 50%;"
-                                                                        placeholder="Nums only">
-                                                                </span>
+
+
                                                                 <small class="badge">
                                                                     <button class="border-light h3" data-toggle="modal"
                                                                         data-target="#timeModify">
@@ -893,8 +915,27 @@ error_reporting(E_ALL);
                                                                         "extraMinutes").value = '';
                                                                 }
                                                                 </script>
-                                                                <small class="badge badge-danger"><i
-                                                                        class="far fa-clock"></i> 3 mins</small>
+
+                                                                <small class="badge badge-info"
+                                                                    style="vertical-align:super;">
+                                                                    <?= $speaker['group_name'] ?>
+                                                                    <i class="far fa-clock"></i>
+                                                                    <input type="text"
+                                                                        name="ptimeInput_<?= $speaker['div_no'] ?>"
+                                                                        id="ptimeInput_<?= $speaker['div_no'] ?>"
+                                                                        style="width: 50px; height:25px; text-align:center;"
+                                                                        value="<?= round($speaker['strength'] * $agenda_time / $total_strength); ?>"
+                                                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+                                                                    mins</small>
+                                                                <small class="badge badge-warning"
+                                                                    style="vertical-align:super;">Spk <i
+                                                                        class="far fa-clock"></i> <input type="text"
+                                                                        name="timeInput_<?= $speaker['div_no'] ?>"
+                                                                        id="timeInput_<?= $speaker['div_no'] ?>"
+                                                                        style="width: 50px; height:25px; text-align:center;"
+                                                                        value="3"
+                                                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+                                                                    mins</small>
                                                                 <!-- Emphasis label -->
                                                                 <small class="badge">
                                                                     <button class="border-light h3"
@@ -905,24 +946,52 @@ error_reporting(E_ALL);
                                                                     <script>
                                                                     function startSpeaking_<?= $speaker['div_no'] ?>() {
                                                                         //alert("Start Speaking");
-                                                                        const atime_<?= $speaker['div_no'] ?> = document
-                                                                            .getElementById(
-                                                                                "nt_<?= $speaker['div_no'] ?>").value;
-                                                                        socket.send(JSON.stringify({
-                                                                            action: "start",
-                                                                            spk: ["<?= $speaker['name_en'] ?>",
-                                                                                "<?= $speaker['name_hi'] ?>",
-                                                                                "<?= $speaker['full_party_name'] ?>",
-                                                                                "<?= $speaker['state_name'] ?>",
-                                                                                "<?= sprintf("%03d", $speaker['div_no']) ?>",
-                                                                                "<?= $speaker['id'] ?>",
-                                                                                "<?= $speaker['pics'] ?>"
-                                                                            ],
-                                                                            time: ["<?= $speaker['party'] ?>",
-                                                                                3,
-                                                                                atime_<?= $speaker['div_no'] ?>
-                                                                            ]
-                                                                        }));
+                                                                        var ptimeValue_<?= $speaker['div_no'] ?> =
+                                                                            document.getElementById(
+                                                                                "ptimeInput_<?= $speaker['div_no'] ?>")
+                                                                            .value;
+                                                                        var timeValue_<?= $speaker['div_no'] ?> =
+                                                                            document.getElementById(
+                                                                                "timeInput_<?= $speaker['div_no'] ?>")
+                                                                            .value;
+                                                                        if (ptimeValue_<?= $speaker['div_no'] ?> ===
+                                                                            undefined ||
+                                                                            ptimeValue_<?= $speaker['div_no'] ?> ===
+                                                                            null ||
+                                                                            ptimeValue_<?= $speaker['div_no'] ?> ===
+                                                                            "") {
+                                                                            alert(
+                                                                                "Please enter a valid Party time in minute"
+                                                                            );
+                                                                        } else if (
+                                                                            timeValue_<?= $speaker['div_no'] ?> ===
+                                                                            undefined ||
+                                                                            timeValue_<?= $speaker['div_no'] ?> ===
+                                                                            null ||
+                                                                            timeValue_<?= $speaker['div_no'] ?> ===
+                                                                            "") {
+                                                                            alert(
+                                                                                "Please enter a valid Speker time in minute"
+                                                                            );
+                                                                        } else {
+
+                                                                            socket.send(JSON.stringify({
+                                                                                action: "start",
+                                                                                spk: ["<?= $speaker['name_en'] ?>",
+                                                                                    "<?= $speaker['name_hi'] ?>",
+                                                                                    "<?= $speaker['full_party_name'] ?>",
+                                                                                    "<?= $speaker['state_name'] ?>",
+                                                                                    "<?= sprintf("%03d", $speaker['div_no']) ?>",
+                                                                                    "<?= $speaker['id'] ?>",
+                                                                                    "<?= $speaker['pics'] ?>"
+                                                                                ],
+                                                                                time: ["<?= $speaker['group_name'] ?>",
+                                                                                    ptimeValue_<?= $speaker['div_no'] ?>,
+                                                                                    timeValue_<?= $speaker['div_no'] ?>
+
+                                                                                ]
+                                                                            }));
+                                                                        }
 
                                                                     }
                                                                     </script>

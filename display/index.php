@@ -417,8 +417,8 @@ HEREDOC;
                 secondsDown += data.value;
                 //alert(data.time[1]*60);                                                
             }else if (data.action === 'start'){
-            secondsDown = data.time[1]*60;
-           alltime = data.time[1]*60; 
+            secondsDown = parseInt(data.time[2]*60);
+           alltime = parseInt(data.time[2]*60); 
            document.getElementById('zero-alloted').innerHTML = formatTime(alltime);
            startCounting();
            document.getElementById('Name').innerHTML = data.spk[0];
@@ -498,6 +498,7 @@ HEREDOC;
         isPaused = false;
          var agenda_id =$agenda_id;
         var fd = new FormData();
+        var group = '';
 
         const counterUpElement = document.getElementById('spoken');
         const counterDownElement = document.getElementById('remaining');
@@ -518,11 +519,15 @@ HEREDOC;
          socket.onmessage = function (event) {
             const data = JSON.parse(event.data);
             if (data.action === 'stop') {
+            alert(parseInt(psecondsDown+psecondsUp)-parseInt(psecondsUp));
             //alert('allotted' + parseInt(secondsDown+secondsUp) +'taken' +secondsUp +'--'+'Party allotted'+ parseInt(psecondsDown+psecondsUp) +' Taken '+psecondsUp);
-            saveLog(agenda_id, del_id, parseInt(psecondsDown+psecondsUp), psecondsUp, parseInt(secondsDown+secondsUp), secondsUp);
+            localStorage.setItem(group+"_premaining", parseInt(psecondsDown+psecondsUp)-parseInt(psecondsUp)); 
+            //saveLog(agenda_id, del_id, parseInt(psecondsDown+psecondsUp), psecondsUp, parseInt(secondsDown+secondsUp), secondsUp);
                         
             } else if (data.action === 'pause') {             
                 Toggleplay();                
+            } else if (data.action === 'terminate'){
+             localStorage.clear(); 
             } else if (data.action === 'start'){
             //alert(data.spk);
              document.getElementById('Name').innerHTML = data.spk[0];
@@ -532,6 +537,17 @@ HEREDOC;
              document.getElementById('Div').innerHTML = data.spk[4];
              del_id = document.getElementById('Div').innerHTML = data.spk[5];
              document.getElementById('Party').innerHTML = data.time[0];
+             document.getElementById('alloted').innerHTML = formatTime(parseInt(data.time[2]*60));
+             document.getElementById('partyTime').innerHTML = formatTime(parseInt(data.time[1]*60));
+             group = data.time[0];
+             console.log(group);
+             secondsDown = parseInt(data.time[2]*60);
+             if(localStorage.getItem(group+"_premaining")){
+             psecondsDown = localStorage.getItem(group+"_premaining");
+             } else {
+             psecondsDown = parseInt(data.time[1]*60);
+             }
+             
              document.getElementById("Spkimg").src='../pics/'+data.spk[6];
              startCounting();
 
