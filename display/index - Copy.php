@@ -1,4 +1,3 @@
-<?php include '../connection.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,31 +10,7 @@
     <link rel="stylesheet" href="./css/custom.css">
     <script src="./js/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="./plugins/fontawesome-free/css/all.min.css">
-    <?php
 
-  if (isset($_GET['inchair'])) {
-    //$sql = "SELECT * FROM `items` WHERE `name` LIKE :keyword;";
-    $pdo = pdo_connect_mysql();
-    $del = $pdo->prepare('SELECT * FROM delegates WHERE name_en = ?');
-    $del->execute([$_GET['inchair']]);
-    $Dels = $del->fetch(PDO::FETCH_ASSOC);
-    //print_r($Dels);
-    //echo $Dels['pics'];
-  }
-  ?>
-    <style>
-    .screen-overlay {
-        width: 100vw;
-        height: 100vh;
-        position: fixed;
-        display: none;
-        top: 0;
-        background: url('../pics/<?= $Dels['pics'] ?>');
-        background-color: #000;
-        background-repeat: no-repeat;
-        background-position: center;
-    }
-    </style>
     <style>
     .self-center {
         display: flex;
@@ -798,19 +773,7 @@ HEREDOC;
       echo $scriptdiscussion;
   }
   ?>
-    <div id="in-the-chair" class="screen-overlay"></div>
-    <script>
-    document.addEventListener("keydown", function(Event) {
-        if (Event.ctrlKey && Event.altKey && Event.key === "z") { // case sensitive
-            var x = document.getElementById("in-the-chair");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            } else {
-                x.style.display = "none";
-            }
-        }
-    });
-    </script>
+
 </body>
 
 </html>
