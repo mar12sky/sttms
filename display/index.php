@@ -801,7 +801,13 @@ HEREDOC;
     <div id="in-the-chair" class="screen-overlay"></div>
     <script>
     document.addEventListener("keydown", function(Event) {
-        if (Event.ctrlKey && Event.altKey && Event.key === "z") { // case sensitive
+        Event.preventDefault();
+        if ((Event.ctrlKey && Event.altKey && Event.key === "z") || (Event.keyCode === 115)) { // case sensitive
+
+            Togglescreen();
+        }
+
+        function Togglescreen() {
             var x = document.getElementById("in-the-chair");
             if (x.style.display === "none") {
                 x.style.display = "block";
