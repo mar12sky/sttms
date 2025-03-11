@@ -19,6 +19,6 @@ function ftime($seconds)
     return sprintf('%02d:%02d:%02d', $t / 3600, floor($t / 60) % 60, $t % 60);
 }
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+// ini_set('display_errors', '1');
+// ini_set('display_startup_errors', '1');
+// error_reporting(E_ALL);

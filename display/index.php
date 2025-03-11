@@ -72,6 +72,8 @@
     .pic_size {
         width: 185px !important;
         height: 200px !important;
+        display: block;
+        margin: 0 auto;
     }
     </style>
 </head>
@@ -179,8 +181,8 @@ HEREDOC;
             <table class="table table-bordered">                
                 <tbody>
                   <tr>
-                    <th scope="row" rowspan="3" class="col-2">
-                        <img id="Spkimg" src="../pics/no-pic.png" alt="Name in English" class="gray-border img-fluid align-middle pic_size">
+                    <th scope="row" rowspan="4" class="col-2" style="vertical-align:top!important;">
+                        <img id="Spkimg" src="../pics/no-pic.png" alt="Name in English" class="gray-border img-fluid align-middle pic_size" style="width:230px!important; height:265px!important">
                     </th>
                     <td scope="row" class="col-10"><h1 id="Hname" class="font-weight-bold">हिंदी में नाम</h1></td>
                     
@@ -193,7 +195,11 @@ HEREDOC;
                     <th scope="row"><h1><span id="FParty">Name of Party</span>, <span id="State" style="text-transform:Capitalize">State</span><input class="d-none" type="number" id="incrementUpInput" placeholder="Increment Up (seconds)" />
     <button class="d-none" id="incrementUp">Increment Up</button><input class="d-none" type="number" id="incrementDownInput" placeholder="Increment Down (seconds)" />
         <button class="d-none" id="incrementDown">Increment Down</button><button id="start" class="btn d-none"><i class="fas fa-play"></i></button>
-    <button id="pause" class="btn d-none"><i class="fas fa-pause"></i></button></h1></th>
+    <button id="pause" class="btn d-none"><i class="fas fa-pause"></i></button></h1></th></tr>
+    <tr>
+                    <th scope="row"><h1 id="alertmsg" class="font-weight-bold text-danger">&nbsp;</h1></th>
+                    
+                  </tr>
                     
                 </tbody>
               </table>
@@ -217,16 +223,16 @@ HEREDOC;
                   <tr>
                     <td scope="col"><h1><span id="MyDateDisplay" class="deligate-details" style="font-weight: bold;">12-01-2025</span></h1></td>
                     <td scope="col"><h1 style="font-weight: bold;">MEMBER</h1></td>
-                    <td scope="col"><h1 id="alloted">00:13:00</h1></td>
+                    <td scope="col"><h1 id="alloted">00:00:00</h1></td>
                     <td scope="col"><h1 id="spoken">00:00:00</h1></td>
                     <td scope="col"><h1 id="remaining">00:00:00</h1></td>
                   </tr>
                   <tr>
                     <td scope="col"><h1><span id="MyClockDisplay" class="deligate-details font-weight-bold">15:20</span></h1></td>
                     <td scope="col"><h1 style="font-weight: bold;">PARTY '<span id="Party"></span>'</h1></td>
-                    <td scope="col"><h1 id="partyTime">01:00:00</h1></td>
+                    <td scope="col"><h1 id="partyTime">00:00:00</h1></td>
                     <td scope="col"><h1 id="pspoken">00:00:00</h1></td>
-                    <td scope="col"><h1 id="premaining">00:60:00</h1></td>
+                    <td scope="col"><h1 id="premaining">00:00:00</h1></td>
                   </tr>
                  
                 </tbody>
@@ -238,7 +244,7 @@ HEREDOC;
     </div>
     <!-- main -->
     <footer>
-        <div class="container-fluid fixed-bottom red-border-top chair_details" style=" height: 15vh; background-color: #546a83;">
+        <div class="container-fluid fixed-bottom red-border-top chair_details" style="  background-color: #546a83;">
             <div class="row">
                 <div class="col-md-12">
                    <h1 class="text-center text-white d-none" id="chairMessage"></h1>
@@ -563,11 +569,12 @@ HEREDOC;
          socket.onmessage = function (event) {
             const data = JSON.parse(event.data);
             if (data.action === 'stop') {
-            alert(parseInt(psecondsDown+psecondsUp)-parseInt(psecondsUp));
+            resetCounting();  
+            //alert(parseInt(psecondsDown+psecondsUp)-parseInt(psecondsUp));
             //alert('allotted' + parseInt(secondsDown+secondsUp) +'taken' +secondsUp +'--'+'Party allotted'+ parseInt(psecondsDown+psecondsUp) +' Taken '+psecondsUp);
             localStorage.setItem(group+"_premaining", parseInt(psecondsDown+psecondsUp)-parseInt(psecondsUp)); 
-            //saveLog(agenda_id, del_id, parseInt(psecondsDown+psecondsUp), psecondsUp, parseInt(secondsDown+secondsUp), secondsUp);
-                        
+            saveLog(agenda_id, del_id, parseInt(psecondsDown+psecondsUp), psecondsUp, parseInt(secondsDown+secondsUp), secondsUp);
+                      
             } else if (data.action === 'pause') {             
                 Toggleplay();                
             } else if (data.action === 'terminate'){
@@ -616,9 +623,18 @@ HEREDOC;
         function startCounting() {
             if (intervalId === null) {
                 intervalId = setInterval(() => {
-                    if ((secondsUp >= timer) && (psecondsUp >= partytimer)){ //(secondsUp >= secondsDown) {
-                        pauseCounting();
-                        alert('Time is up!');
+                    
+                    if (secondsUp === secondsDown+secondsUp) {
+                        //pauseCounting();
+                        //alert('Time is up!');                        
+                        document.getElementById('alertmsg').innerHTML = '<span class="text-danger">Time is Over</span>';
+                        document.getElementById('spoken').style.color = 'red';
+                         secondsUp += 1;
+                        psecondsUp += 1;
+                         updateTimers();
+                    } else if ((secondsUp >= timer) && (psecondsUp >= partytimer)){ //(secondsUp >= secondsDown) {    
+                    document.getElementById('alertmsg').innerHTML = '<span class="text-danger">Time is Over</span>';
+                    document.getElementById('pspoken').style.color = 'red';
                     } else {
                         secondsUp += 1;
                         psecondsUp += 1;
@@ -636,7 +652,11 @@ HEREDOC;
                 intervalId = null;
             }
         }
-
+        function resetCounting() {
+        pauseCounting();
+        secondsUp = 0; 
+        updateTimers(); 
+        }
         function incrementCounterUp() {
             const incrementValue = parseInt(incrementUpInput.value) || 0;
             socket.send(JSON.stringify({ type: 'incrementUp', value: incrementValue }));
@@ -680,10 +700,13 @@ HEREDOC;
         function Toggleplay(){
           if(isPaused===false){
             pauseCounting();
+            
+            document.getElementById('alertmsg').innerHTML = '<span class="text-danger">Time Paused</span>';
             isPaused = true;
           } else {
             startCounting();
             isPaused = false;
+            document.getElementById('alertmsg').innerHTML = '<span class="text-danger"></span>';
           }
         }
 
