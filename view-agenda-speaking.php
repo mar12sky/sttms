@@ -22,24 +22,24 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <style>
-        #sortable1,
-        #sortable2 {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            margin-right: 10px;
-            float: left;
-            margin-bottom: 10px;
-        }
+    #sortable1,
+    #sortable2 {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        margin-right: 10px;
+        float: left;
+        margin-bottom: 10px;
+    }
 
-        #sortable1 li,
-        #sortable2 li {
-            margin: 5px;
-            padding: 5px;
-            font-size: 1.2em;
-            height: 1.5em;
-            border: 1PX solid #333;
-        }
+    #sortable1 li,
+    #sortable2 li {
+        margin: 5px;
+        padding: 5px;
+        font-size: 1.2em;
+        height: 1.5em;
+        border: 1PX solid #333;
+    }
     </style>
 </head>
 
@@ -201,7 +201,7 @@
                                         $stmt = $pdo->prepare('SELECT * FROM agenda WHERE agenda_id = ?');
                                         $stmt->execute([$_GET['agenda_id']]);
                                         $contact = $stmt->fetch(PDO::FETCH_ASSOC); ?>
-                                        <h3 class="card-title text-bold"><?= $contact['agenda_title'] ?></h3>
+                                    <h3 class="card-title text-bold"><?= $contact['agenda_title'] ?></h3>
                                     <?php if (!$contact) {
                                             exit('Session doesn\'t exist with that ID!');
                                         }
@@ -238,7 +238,7 @@
                                                                                 } ?>">
                                                         TIME ALLOTMENT (Hours: Minutes) :
                                                         <?php $agenda_time = $contact['agenda_time']; ?>
-                                                        <?= sprintf('%02d:%02d', ($contact['agenda_time'] / 60 % 60), $contact['agenda_time'] % 60); ?>
+
                                                         HRS</p>
                                                 </td>
                                             </tr>
@@ -295,9 +295,10 @@
                                                     ?>
                                                     <ul id="sortable1" class="connectedSortable">
                                                         <?php foreach ($contacts as $contact): ?>
-                                                            <li id="<?= $contact['id'] ?>" class="ui-state-default"
-                                                                style="cursor:move; font-weight:bold; text-align:center; width:50px; height:40px; float:left; font-size:16px; line-height:40px;">
-                                                                <?= $contact['div_no'] ?></li>
+                                                        <li id="<?= $contact['id'] ?>" class="ui-state-default"
+                                                            onclick="javascript:$('#sortable2').append(this)"
+                                                            style="cursor:move; font-weight:bold; text-align:center; width:50px; height:40px; float:left; font-size:16px; line-height:40px;">
+                                                            <?= $contact['div_no'] ?></li>
                                                         <?php endforeach; ?>
                                                     </ul>
 
@@ -352,28 +353,28 @@
                                             </div>
                                         </div>
                                         <script>
-                                            $(function() {
-                                                $(".connectedSortable").sortable({
-                                                    connectWith: ".connectedSortable"
-                                                }).disableSelection();
-                                            });
+                                        $(function() {
+                                            $(".connectedSortable").sortable({
+                                                connectWith: ".connectedSortable"
+                                            }).disableSelection();
+                                        });
 
-                                            $("#saveOrder").click(function() {
-                                                var order = $("#sortable2").sortable("toArray");
-                                                $.ajax({
-                                                    url: 'save_speaker.php',
-                                                    method: 'POST',
+                                        $("#saveOrder").click(function() {
+                                            var order = $("#sortable2").sortable("toArray");
+                                            $.ajax({
+                                                url: 'save_speaker.php',
+                                                method: 'POST',
 
-                                                    data: {
-                                                        order: order,
-                                                        agenda_id: <?= $_GET['agenda_id'] ?>
-                                                    },
-                                                    success: function(response) {
-                                                        alert('Speakers added successfully');
-                                                        //alert(response);
-                                                    }
-                                                });
+                                                data: {
+                                                    order: order,
+                                                    agenda_id: <?= $_GET['agenda_id'] ?>
+                                                },
+                                                success: function(response) {
+                                                    alert('Speakers added successfully');
+                                                    //alert(response);
+                                                }
                                             });
+                                        });
                                         </script>
                                     </div>
 
@@ -422,23 +423,23 @@
     <script src="dist/js/demo.js"></script>
     <!-- Page specific script -->
     <script>
-        $(function() {
-            $("#example1").DataTable({
-                "responsive": true,
-                "lengthChange": true,
-                "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
-            });
+    $(function() {
+        $("#example1").DataTable({
+            "responsive": true,
+            "lengthChange": true,
+            "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
         });
+    });
     </script>
 </body>
 

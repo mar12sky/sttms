@@ -31,7 +31,7 @@
         display: none;
         top: 0;
         background: url('../pics/<?= $Dels['pics'] ?>');
-        background-color: #000;
+        background-color: #fff;
         background-repeat: no-repeat;
         background-position: center;
     }
@@ -70,8 +70,8 @@
     }
 
     .pic_size {
-        width: 205px !important;
-        height: 235px !important;
+        width: 185px !important;
+        height: 200px !important;
     }
     </style>
 </head>
@@ -140,10 +140,10 @@
                   </tr>
                   <tr>
                     <td scope="col"><h1><span id="MyClockDisplay" class="deligate-details font-weight-bold">15:20</span></h1></td>
-                    <td scope="col"><h1 style="font-weight: bold;"></h1></td>
+                    <td colspan="4" scope="col"><h1 style="font-weight: bold;" id="alertmsg"></h1><button class="btn d-none" id="start"><i class="fas fa-play"></i></button><button class="btn d-none" id="pause"><i class="fas fa-pause"></i></button></td>
+                    <!--<td scope="col"><h1></h1></td>
                     <td scope="col"><h1></h1></td>
-                    <td scope="col"><h1></h1></td>
-                    <td scope="col"><h1></h1></td>
+                    <td scope="col"><h1></h1></td> --.
                   </tr>
                  
                 </tbody>
@@ -303,11 +303,11 @@ HEREDOC;
                   </tr>
                   <tr>
                     <td scope="col"><h1><span id="MyClockDisplay" class="deligate-details font-weight-bold">00:00</span></h1></td>
-                    <td scope="col"><h1 style="font-weight: bold;"></h1></td>
-                    <td scope="col"><h1 id="partyTime"></h1></td>
-                    <td scope="col"><h1></h1><button class="btn d-none" id="start"><i class="fas fa-play"></i></button>
-                    <button class="btn d-none" id="pause"><i class="fas fa-pause"></i></button></td>
-                    <td scope="col"><h1></h1></td>
+                    <td colspan="4" scope="col"><h1 style="font-weight: bold;" id="alertmsg"></h1><button class="btn d-none" id="start"><i class="fas fa-play"></i></button><button class="btn d-none" id="pause"><i class="fas fa-pause"></i></button></td>
+                    <!-- <td scope="col"><h1 id="partyTime"></h1></td>
+                    <td scope="col"><h1></h1>
+                    </td>
+                    <td scope="col"><h1></h1></td> -->
                   </tr>
                  
                 </tbody>
@@ -379,10 +379,12 @@ HEREDOC;
         function Toggleplay(){
           if(pauseStaus===false){
             pauseCounting();
+            document.getElementById('alertmsg').innerHTML = '<span class="text-danger">Time paused</span>';
             pauseStaus = true;
           } else {
             startCounting();
             pauseStaus = false;
+            document.getElementById('alertmsg').innerHTML = '<span class="text-danger"></span>';
           }
         }
         function formatTime(seconds) {
@@ -397,7 +399,7 @@ HEREDOC;
             counterUpElement.textContent = formatTime(secondsUp);
             counterDownElement.textContent = formatTime(secondsDown);
         }
-
+        /*
         function startCounting() {
             if (intervalId === null) {
                 intervalId = setInterval(() => {
@@ -406,8 +408,23 @@ HEREDOC;
                     updateTimers();
                 }, 1000);
             }
-        }
+        }*/
+        function startCounting() {
+            if (intervalId === null) {
+                intervalId = setInterval(() => {
+                    secondsUp += 1;
+                    secondsDown = Math.max(0, secondsDown - 1);
+                    updateTimers();
 
+                    // Trigger an alert when secondsUp equals secondsDown
+                    if (secondsUp === secondsDown+secondsUp) {
+                        //alert("secondsUp has reached secondsDown!");
+                        document.getElementById('zero-counterUp').style.color = 'red';
+                        document.getElementById('alertmsg').innerHTML = '<span class="text-danger">Time is over!</span>';
+                    }
+                }, 1000);
+            }
+        }
         function pauseCounting() {
             if (intervalId !== null) {
                 clearInterval(intervalId);
@@ -442,6 +459,8 @@ HEREDOC;
                 secondsDown += data.value;
                 //alert(data.time[1]*60);                                                
             }else if (data.action === 'start'){
+            document.getElementById('zero-counterUp').style.color = 'black';
+            document.getElementById('alertmsg').innerHTML = '<span class="text-danger"></span>';
             secondsDown = parseInt(data.time[2]*60);
            alltime = parseInt(data.time[2]*60); 
            document.getElementById('zero-alloted').innerHTML = formatTime(alltime);
@@ -696,6 +715,8 @@ HEREDOC;
             const data = JSON.parse(event.data);
             if (data.action === 'stop') {
             //alert(currentTime);
+            //pauseTimer();
+            resetCounting();
             saveLog(agenda_id, del_id, 0, currentTime);
                 //startTimer();
             } else if (data.action === 'pause') {
@@ -704,6 +725,7 @@ HEREDOC;
                 
             } else if (data.action === 'start'){
             //alert(data.spk);
+            document.getElementById('alertmsg').innerHTML = '<span class="text-danger"></span>';
              document.getElementById('Name').innerHTML = data.spk[0];
              document.getElementById('Hname').innerHTML = data.spk[1];
              document.getElementById('FParty').innerHTML = data.spk[2];
@@ -725,8 +747,9 @@ HEREDOC;
             //console.log(hours. toString() . padStart(2, '0') + ':' + minutes. toString() . padStart(2, '0') + ':' + seconds. toString() . padStart(2, '0'));
         }
       function resetCounting() {
-          pauseCounting(); // Stop the timer if it's running          
-          document.getElementById('spk-spoken').innerHTML = '00:00:00';          
+          pauseTimer(); // Stop the timer if it's running          
+          document.getElementById('spk-spoken').innerHTML = '00:00:00';  
+          currentTime = 0;        
           updateTimers();
       }
         function startTimer() {
@@ -739,7 +762,8 @@ HEREDOC;
                             updateTimer();
                         } else {
                             clearInterval(timerInterval);
-                            alert("Time's up!");
+                            //alert("Time's up!");
+                            document.getElementById('alertmsg').innerHTML = '<span class="text-danger">Time is over!</span>';
                         }
                     }
                 }, 1000);
@@ -748,9 +772,11 @@ HEREDOC;
         function Toggleplay(){
           if(isPaused===false){
             pauseTimer();
+            document.getElementById('alertmsg').innerHTML = '<span class="text-danger">Time Paused</span>';
             isPaused = true;
           } else {
             startTimer();
+          document.getElementById('alertmsg').innerHTML = '<span class="text-danger"></span>';
             isPaused = false;
           }
         }
