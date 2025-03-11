@@ -285,7 +285,9 @@
                                                     ?>
                                                     <ul id="sortable1" class="connectedSortable">
                                                         <?php foreach ($contacts as $contact): ?>
-                                                        <li id="<?= $contact['id'] ?>" class="ui-state-default"
+                                                        <li id="<?= $contact['id'] ?>"
+                                                            onclick="javascript:$('#sortable2').append(this)"
+                                                            class="ui-state-default"
                                                             style="cursor:move; font-weight:bold; text-align:center; width:50px; height:40px; float:left; font-size:16px; line-height:40px;">
                                                             <?= $contact['div_no'] ?></li>
                                                         <?php endforeach; ?>
@@ -341,13 +343,14 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <script>
                                         $(function() {
+                                            // Enable sortable functionality
                                             $(".connectedSortable").sortable({
                                                 connectWith: ".connectedSortable"
                                             }).disableSelection();
                                         });
-
                                         $("#saveOrder").click(function() {
                                             var order = $("#sortable2").sortable("toArray");
                                             $.ajax({
